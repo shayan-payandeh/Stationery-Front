@@ -29,8 +29,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-async function Page({ params }: Props) {
-  const id = (await params).id;
+export async function generateStaticParams() {
+  const products = await http
+    .get<IProduct>("/product/list")
+    .then(({ data }) => data.data.products.docs);
+  return products.map((product) => ({
+    id: product._id,
+  }));
+}
+
+async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const product = await http
     .get(`/product/product/${id}`)
     .then(({ data }) => data.data.product);
