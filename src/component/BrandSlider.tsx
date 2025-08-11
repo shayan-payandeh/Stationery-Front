@@ -1,24 +1,24 @@
 "use client";
+import { routes } from "@/constant/routes";
 import { IBrandsGet } from "@/interface/brands";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { toPersianNumbers } from "@/utils/toPersianNumbers";
+import Link from "next/link";
+import { IoIosArrowBack } from "react-icons/io";
 import Slider from "react-slick";
 import ScrollBlur from "./animate/ScrollBlur";
-import Link from "next/link";
-import { routes } from "@/constant/routes";
-import { toPersianNumbers } from "@/utils/toPersianNumbers";
 
 function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
-  const SlickButtonFix = (props: {
-    children: JSX.Element;
-    slidecount?: number;
-    currentslide?: number;
-  }) => {
-    const { children, ...others } = props;
-    return <span>{children}</span>;
-  };
+  // const SlickButtonFix = (props: {
+  //   children: JSX.Element;
+  //   slidecount?: number;
+  //   currentslide?: number;
+  // }) => {
+  //   const { children, ...others } = props;
+  //   return <span>{children}</span>;
+  // };
 
   const NextArrow = (props) => {
-    const { className, onClick, style } = props;
+    const { onClick } = props;
     return (
       <div
         onClick={onClick}
@@ -29,7 +29,7 @@ function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
     );
   };
   const PrevArrow = (props) => {
-    const { className, onClick, style } = props;
+    const { onClick } = props;
     return (
       <div
         onClick={onClick}
