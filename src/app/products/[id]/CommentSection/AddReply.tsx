@@ -1,5 +1,6 @@
 import { useAddReplyToComment } from "@/hook/useComment";
 import { ChangeEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 function AddReply({ eachCommentReply, comment, replyDropdown, refetch }) {
   const [replyContext, setReplyContext] = useState("");
@@ -10,11 +11,15 @@ function AddReply({ eachCommentReply, comment, replyDropdown, refetch }) {
   };
 
   const replyHandler = async (commentId: string) => {
-    const reply = {
-      context: replyContext,
-    };
-    await addReplyToCommentMutateAsync({ commentId, reply });
-    refetch();
+    try {
+      const reply = {
+        context: replyContext,
+      };
+      await addReplyToCommentMutateAsync({ commentId, reply });
+      refetch();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error.message);
+    }
   };
   return (
     <div>

@@ -31,9 +31,9 @@ export const useAddComment = () => {
     onSuccess: (data) => {
       toast.success(data.message);
     },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message || error.message);
-    },
+    // onError: (error: any) => {
+    //    toast.error(error.response?.data?.message || error.message);
+    // },
   });
 };
 
@@ -49,9 +49,9 @@ export const useAddReplyToComment = () => {
     onSuccess: (data) => {
       toast.success(data.message);
     },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message || error.message);
-    },
+    // onError: (error: any) => {
+    //    toast.error(error.response?.data?.message || error.message);
+    // },
   });
 };
 

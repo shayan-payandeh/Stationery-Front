@@ -3,6 +3,7 @@ import { useAddLikeToComment } from "@/hook/useComment";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import { getCookie } from "cookies-next";
 import React from "react";
+import toast from "react-hot-toast";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 
 function CommentLike({ comment, allCommentsCopy, setAllComments }) {
@@ -14,27 +15,31 @@ function CommentLike({ comment, allCommentsCopy, setAllComments }) {
   const { mutateAsync: addLikeToCommentMutateAsync } = useAddLikeToComment();
 
   const likeHandler = async (commentId: string) => {
-    const theComment = allCommentsCopy.find((item) => item._id === commentId);
-    const theCommentIndex = allCommentsCopy.findIndex(
-      (item) => item._id === commentId,
-    );
-    const commentLikeStatus = theComment?.likedBy.includes(userId);
-    const data = { likeType: commentLikeStatus ? 0 : 1 };
-    //change state
-    const theCommentCopy = { ...theComment };
-    const likedByArray = theCommentCopy.likedBy;
-    const theIndex = likedByArray?.findIndex((item) => item === userId);
-    commentLikeStatus
-      ? likedByArray?.splice(theIndex as number, 1)
-      : likedByArray?.push(userId);
+    if (userId) {
+      const theComment = allCommentsCopy.find((item) => item._id === commentId);
+      const theCommentIndex = allCommentsCopy.findIndex(
+        (item) => item._id === commentId,
+      );
+      const commentLikeStatus = theComment?.likedBy.includes(userId);
+      const data = { likeType: commentLikeStatus ? 0 : 1 };
+      //change state
+      const theCommentCopy = { ...theComment };
+      const likedByArray = theCommentCopy.likedBy;
+      const theIndex = likedByArray?.findIndex((item) => item === userId);
+      commentLikeStatus
+        ? likedByArray?.splice(theIndex as number, 1)
+        : likedByArray?.push(userId);
 
-    const CopyOfAllCommentsCopy = [...allCommentsCopy];
-    CopyOfAllCommentsCopy[theCommentIndex].likedBy = likedByArray as string[];
-    setAllComments(CopyOfAllCommentsCopy);
+      const CopyOfAllCommentsCopy = [...allCommentsCopy];
+      CopyOfAllCommentsCopy[theCommentIndex].likedBy = likedByArray as string[];
+      setAllComments(CopyOfAllCommentsCopy);
 
-    //api call
-    await addLikeToCommentMutateAsync({ commentId, data });
-    // refetch();
+      //api call
+      await addLikeToCommentMutateAsync({ commentId, data });
+      // refetch();
+    } else {
+      toast.error("لطفا وارد حساب کاربری خود شوید .");
+    }
   };
 
   return (

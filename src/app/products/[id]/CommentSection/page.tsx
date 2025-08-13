@@ -155,20 +155,25 @@ function CommentSection() {
                 />
               </div>
               <div className="col-span-1 flex justify-center">
-                {tabTitle.map((item) => (
-                  <Tab
-                    key={item.index}
-                    className={
-                      "relative inline-block cursor-pointer px-[20px] py-[6px] focus:outline-none"
-                    }
-                  >
-                    <span
-                      className={`${tabIndex === item.index ? "text-primary-500" : "text-slate-400"} text-[15px]`}
+                {tabTitle.map((item) => {
+                  if (item.name === "mine" && !userId) {
+                    return null;
+                  }
+                  return (
+                    <Tab
+                      key={item.index}
+                      className={
+                        "relative inline-block cursor-pointer px-[20px] py-[6px] focus:outline-none"
+                      }
                     >
-                      {item.title}
-                    </span>
-                  </Tab>
-                ))}
+                      <span
+                        className={`${tabIndex === item.index ? "text-primary-500" : "text-slate-400"} text-[15px]`}
+                      >
+                        {item.title}
+                      </span>
+                    </Tab>
+                  );
+                })}
               </div>
             </TabList>
             <TabPanel className={"py-3"}>

@@ -2,6 +2,7 @@ import { useAddComment } from "@/hook/useComment";
 import { ICommentPost } from "@/interface/comment";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 function AddComment({ refetch }) {
   const { id } = useParams();
@@ -13,12 +14,16 @@ function AddComment({ refetch }) {
   };
 
   const submitHandler = async () => {
-    const comment: ICommentPost = {
-      context: commentText,
-      productId: id as string,
-    };
-    await addCommentMutateAsync(comment);
-    refetch();
+    try {
+      const comment: ICommentPost = {
+        context: commentText,
+        productId: id as string,
+      };
+      await addCommentMutateAsync(comment);
+      refetch();
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || error.message);
+    }
   };
   return (
     <div className="flex flex-col gap-4">

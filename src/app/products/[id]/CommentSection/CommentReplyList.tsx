@@ -6,6 +6,7 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import UserProfile from "../../../../../public/user-profile-icon.png";
 import { useAddLikeToReply } from "@/hook/useComment";
 import CommentOrReplyTextSection from "./CommentOrReplyTextSection";
+import { dataDifference } from "@/utils/dateDifference";
 
 function CommentReplyList({
   replyListStatus,
@@ -83,7 +84,10 @@ function CommentReplyList({
                         </div>
                         <div id="date-container" className="flex items-center">
                           <span className="text-[12px] text-gray-400">
-                            یک روز پیش
+                            {toPersianNumbers(
+                              dataDifference(reply.createdAt).numericValue,
+                            )}{" "}
+                            {dataDifference(reply.createdAt).message} {"پیش"}{" "}
                           </span>
                         </div>
                       </div>
