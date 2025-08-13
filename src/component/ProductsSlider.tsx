@@ -1,79 +1,48 @@
 "use client";
 import Card from "@/component/Card";
 import { IProductsGet } from "@/interface/products";
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Slider from "react-slick";
-import ScrollBlur from "./animate/ScrollBlur";
 
 function ProductsSlider({
   productsToShow,
 }: {
   productsToShow: IProductsGet[];
 }) {
-  const SlickButtonFix = (props: {
-    children: JSX.Element;
-    slidecount?: number;
-    currentslide?: number;
-  }) => {
-    const { children, ...others } = props;
-    return <span {...others}>{children}</span>;
-  };
-
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    nextArrow: (
-      <SlickButtonFix>
-        <IoIosArrowBack size={30} />
-      </SlickButtonFix>
-    ),
-    prevArrow: (
-      <SlickButtonFix>
-        <IoIosArrowForward size={25} />
-      </SlickButtonFix>
-    ),
-  };
-
   return (
-    <div className="w-full gap-4 px-4">
-      <div className="w-full gap-4 px-4">
-        <div id="product-card-wrapper" className="w-full">
-          <div>
-            <Slider
-              {...settings}
-              rtl={true}
-              centerMode={false}
-              responsive={[
-                {
-                  breakpoint: 580,
-                  settings: { slidesToShow: 1, slidesToScroll: 1 },
-                },
-                {
-                  breakpoint: 1024,
-                  settings: { slidesToShow: 2, slidesToScroll: 1 },
-                },
-                {
-                  breakpoint: 1280,
-                  settings: { slidesToShow: 3, slidesToScroll: 1 },
-                },
-              ]}
-            >
-              {productsToShow!?.map((product) => (
-                <ScrollBlur
-                  htmlTag="div"
-                  key={product._id}
-                  id="brand-card"
-                  className="col-span-2 grid w-full place-items-center justify-items-center gap-y-2 rounded-md sm:col-span-3 md:col-span-2 lg:col-span-3 xl:col-span-2"
-                >
-                  <Card product={product} />
-                </ScrollBlur>
-              ))}
-            </Slider>
-          </div>
-        </div>
-      </div>
+    <div className="relative overflow-x-hidden px-4">
+      <Swiper
+        className=""
+        modules={[Navigation]}
+        spaceBetween={12}
+        slidesPerView={1}
+        navigation={{
+          nextEl: ".custom-next",
+          prevEl: ".custom-prev",
+        }}
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          960: { slidesPerView: 3 },
+          1280: { slidesPerView: 4 },
+        }}
+      >
+        {productsToShow?.map((product) => (
+          <SwiperSlide key={product._id} className="!flex justify-center gap-2">
+            <Card product={product} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* دکمه‌های سفارشی */}
+      <button className="custom-prev absolute right-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-black/40 text-sm text-light-100 md:right-0">
+        <IoIosArrowForward size={16} />
+      </button>
+      <button className="custom-next absolute left-2 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-black/40 text-sm text-light-100 md:left-0">
+        <IoIosArrowBack size={16} />
+      </button>
     </div>
   );
 }

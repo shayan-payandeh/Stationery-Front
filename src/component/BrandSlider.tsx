@@ -3,7 +3,7 @@ import { routes } from "@/constant/routes";
 import { IBrandsGet } from "@/interface/brands";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
 import ScrollBlur from "./animate/ScrollBlur";
 
@@ -22,9 +22,9 @@ function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
     return (
       <div
         onClick={onClick}
-        className="w-1/6 rounded-full bg-black p-2 text-white transition hover:bg-gray-800"
+        className="absolute -right-4 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-black/35 text-white shadow-md hover:bg-gray-800 sm:-right-6"
       >
-        <IoIosArrowBack size={25} />
+        <IoIosArrowForward size={16} />
       </div>
     );
   };
@@ -33,9 +33,9 @@ function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
     return (
       <div
         onClick={onClick}
-        className="w-1/6 rounded-full bg-black p-2 text-white transition"
+        className="absolute -left-4 top-1/2 z-10 flex h-6 w-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-black/35 text-white shadow-md sm:-left-6"
       >
-        <IoIosArrowBack size={25} />
+        <IoIosArrowBack size={16} />
       </div>
     );
   };

@@ -45,7 +45,7 @@ function BestDiscountSection() {
             </Link>
           </div>
         </div>
-        <div id="product-card-wrapper" className="flex-center w-full">
+        <div id="product-card-wrapper" className="flex">
           {children}
         </div>
       </div>
