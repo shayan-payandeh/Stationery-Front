@@ -4,7 +4,7 @@ import { ISubCategoryGet } from "@/interface/subCategory";
 
 type ProductListProps = {
   productList: IProductsGet[];
-  theSubCategory: ISubCategoryGet;
+  theSubCategory?: ISubCategoryGet;
 };
 
 function ProductList({ productList, theSubCategory }: ProductListProps) {

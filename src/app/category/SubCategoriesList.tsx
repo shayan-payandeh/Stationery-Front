@@ -1,11 +1,16 @@
 import { ISubCategoryGet } from "@/interface/subCategory";
 import SubCategoryCard from "./SubCategoryCard";
+import { ICategoryGet } from "@/interface/category";
 
 type SubCategoriesListProps = {
   subCategories: ISubCategoryGet[];
+  categories: ICategoryGet[];
 };
 
-function SubCategoriesList({ subCategories }: SubCategoriesListProps) {
+function SubCategoriesList({
+  subCategories,
+  categories,
+}: SubCategoriesListProps) {
   return (
     <div
       id="category-wrapper"
@@ -13,9 +18,8 @@ function SubCategoriesList({ subCategories }: SubCategoriesListProps) {
     >
       {subCategories.map((subCategory) => (
         <SubCategoryCard
-          image={subCategory.image}
-          slug={subCategory.slug}
-          title={subCategory.persianTitle}
+          categories={categories}
+          subCategory={subCategory}
           key={subCategory._id}
           classes="col-span-2 grid w-full place-items-center justify-items-center gap-y-2 rounded-md bg-light-300 p-4 sm:col-span-3 md:col-span-2 lg:col-span-3 xl:col-span-2 2xl:col-span-2"
         />

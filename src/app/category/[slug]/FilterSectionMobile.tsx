@@ -1,3 +1,4 @@
+"use client";
 import AccordionFilter from "@/component/AccordionFilter";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -18,7 +19,7 @@ function FilterSectionMobile({
   const router = useRouter();
   const pathname = usePathname();
 
-  const initialFilterValues = filterValues.map((item) => ({
+  const initialFilterValues = filterValues?.map((item) => ({
     ...item,
     values: new URLSearchParams(searchParams).get(item.title)?.split(",") || [],
   }));

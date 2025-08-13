@@ -1,3 +1,4 @@
+"use client";
 import { ISubCategoryGet } from "@/interface/subCategory";
 import { useRef } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -7,12 +8,14 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SubCategoryCard from "../SubCategoryCard";
+import { ICategoryGet } from "@/interface/category";
 
 type SwiperSectionProps = {
   theSubCategory: ISubCategoryGet[];
+  categories: ICategoryGet[];
 };
 
-function SwiperSection({ theSubCategory }: SwiperSectionProps) {
+function SwiperSection({ theSubCategory, categories }: SwiperSectionProps) {
   const swiperRef = useRef<SwiperCore>();
 
   const limitDesktopLG = 6;
@@ -71,9 +74,8 @@ function SwiperSection({ theSubCategory }: SwiperSectionProps) {
               {theSubCategory?.map((subCategory) => (
                 <SwiperSlide key={subCategory._id}>
                   <SubCategoryCard
-                    slug={subCategory.slug}
-                    image={subCategory.image}
-                    title={subCategory.persianTitle}
+                    subCategory={subCategory}
+                    categories={categories}
                     classes="mx-auto grid w-[150px] place-items-center justify-items-center gap-y-2 rounded-md bg-light-200 px-2 py-3"
                   />
                 </SwiperSlide>

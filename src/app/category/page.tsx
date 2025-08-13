@@ -8,11 +8,14 @@ import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import { ChangeEvent, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import SubCategoriesList from "./SubCategoriesList";
+import { useGetCategories } from "@/hook/useCategories";
 
 function Page() {
   const [searchText, setSearchText] = useState("");
   const { data, isLoading } = useGetSubCategories();
   const { subCategories } = data || {};
+  const { data: categoriesData } = useGetCategories();
+  const { categories } = categoriesData || {};
   const filteredSubCategories = searchText
     ? subCategories!.filter((item) => item.persianTitle.includes(searchText))
     : subCategories;
@@ -62,7 +65,10 @@ function Page() {
             />
           </div>
         </div>
-        <SubCategoriesList subCategories={filteredSubCategories} />
+        <SubCategoriesList
+          subCategories={filteredSubCategories}
+          categories={categories}
+        />
       </div>
     </div>
   );

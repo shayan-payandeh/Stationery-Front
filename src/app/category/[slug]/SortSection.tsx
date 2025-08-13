@@ -1,3 +1,4 @@
+"use client";
 import { sortValues } from "@/constant/sortValues";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
