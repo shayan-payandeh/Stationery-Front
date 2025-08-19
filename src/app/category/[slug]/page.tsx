@@ -1,6 +1,5 @@
 import AppBreadCrumb from "@/component/AppBreadCrumb";
 import { categoriesIconSlug } from "@/constant/category";
-import { appRoutes } from "@/constant/routes";
 import { IApiResponse } from "@/interface/apiResponse";
 import { ICategoryGet } from "@/interface/category";
 import { IProduct } from "@/interface/products";
@@ -19,6 +18,7 @@ export async function generateStaticParams() {
     slug: category.slug,
   }));
 }
+
 async function Page({ params }) {
   const slug = decodeURI(params.slug);
 
@@ -43,7 +43,6 @@ async function Page({ params }) {
     (item) => item.slug === decodeURI(slug),
   )?.Icon;
 
-  const { link, persianTitle } = appRoutes.category;
   // const defaultSlugs = [
   //   "لوازم-دانش-آموزی",
   //   "لوازم-اداری",
@@ -64,7 +63,6 @@ async function Page({ params }) {
         <div className="responsive__wrapper flex flex-col gap-1">
           <AppBreadCrumb
             destinations={[
-              { title: persianTitle, link: link },
               { title: decodeURI(slug).replaceAll("-", " "), link: "" },
             ]}
           />

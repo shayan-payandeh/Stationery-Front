@@ -4,27 +4,27 @@ import {
   BsPatchQuestion,
   BsTelephone,
 } from "react-icons/bs";
-import { routes } from "./routes";
+import { appRoutes } from "./routes";
 
 export const menuItems = [
   {
     name: "خانه",
-    link: `${routes.main}`,
+    link: `${appRoutes.main.link}`,
     icon: <AiOutlineHome />,
   },
   {
     name: "درباره ما",
-    link: `${routes.about}`,
+    link: `${appRoutes.about.link}`,
     icon: <BsExclamationCircle />,
   },
   {
     name: "ارتباط با ما",
-    link: `${routes.contact}`,
+    link: `${appRoutes.contact.link}`,
     icon: <BsTelephone />,
   },
   {
     name: "سوالات متداول",
-    link: `${routes.faq}`,
+    link: `${appRoutes.faq.link}`,
     icon: <BsPatchQuestion />,
   },
 ];

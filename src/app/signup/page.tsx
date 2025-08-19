@@ -1,83 +1,4 @@
-// "use client";
-// import SignupForm from "@/component/SignupForm";
-// import { routes } from "@/constant/routes";
-// import Link from "next/link";
-// import { ChangeEvent, useEffect, useState } from "react";
-// import { useFormState } from "react-dom";
-// import { useForm } from "react-hook-form";
-// import toast from "react-hot-toast";
-// import { createUser } from "../actions";
-
-// const initialState = {
-//   message: "",
-//   errorMessage: "",
-// };
-
-// function Page() {
-//   const {
-//     register,
-//     formState: { errors },
-//     handleSubmit,
-//   } = useForm();
-
-//   const [state, formAction] = useFormState(createUser, initialState);
-//   const { message, errorMessage } = state;
-
-//   useEffect(() => {
-//     if (message) {
-//       toast.success(message);
-//     } else if (errorMessage) {
-//       toast.error(errorMessage);
-//     }
-//   }, [message, errorMessage]);
-
-//   // const registerHandler = async () => {
-//   //   // e.preventDefault();
-//   //   if (password !== reapeatedPassword) toast.error("رمز عبور یکسان نیست !");
-//   //   else
-//   //     mutate({
-//   //       email: email,
-//   //       phoneNumber: phoneNumber,
-//   //       fullName: name,
-//   //       password: password,
-//   //     });
-//   // };
-
-//   return (
-//     <div id="form-wrapper" className="flex-center w-full py-16 md:py-10">
-//       <div
-//         id="login-form-wrapper"
-//         className="grid w-[58%] min-w-[300px] max-w-[400px] gap-3 rounded-md bg-light-100 p-6 shadow-container"
-//       >
-//         <h2 className="text-center text-[1.1rem] font-semibold text-dark-500">
-//           {"عضویت در سایت"}
-//         </h2>
-//         <form
-//           action={handleSubmit(formAction as any)}
-//           id="form"
-//           className="grid gap-6"
-//         >
-//           <SignupForm register={register} errors={errors} btnTitle={"ثبت نام"}>
-//             <span>
-//               <span className="text-dark-500">قبلا عضو شده اید؟</span>
-//               &nbsp;
-//               <Link href={routes.login}>
-//                 <span className="font-medium text-primary-400">
-//                   ورود به سایت
-//                 </span>
-//               </Link>
-//             </span>
-//           </SignupForm>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Page;
-
 "use client";
-import { routes } from "@/constant/routes";
 import { useGetProfile, useRegister } from "@/hook/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -85,6 +6,7 @@ import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import FormAuth from "../../component/Form";
 import { useRouter } from "next/navigation";
+import { appRoutes } from "@/constant/routes";
 
 function Page() {
   const [hasToken, setHasToken] = useState(false);
@@ -203,10 +125,10 @@ function Page() {
         header={"عضویت در سایت"}
         submitHandler={registerHandler}
       >
-        <span>
+        <span className="text-sm">
           <span className="text-dark-500">قبلا عضو شده اید؟</span>
           &nbsp;
-          <Link href={routes.login}>
+          <Link href={appRoutes.login.link}>
             <span className="font-medium text-primary-400">ورود به سایت</span>
           </Link>
         </span>

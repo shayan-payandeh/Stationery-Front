@@ -1,5 +1,5 @@
 "use client";
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import { AppCtxt } from "@/context/Store";
 import { useLogout } from "@/hook/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,20 +16,20 @@ import {
 const nabarItems = [
   {
     id: 10,
-    title: "پیشخوان",
-    link: `${routes.profile}`,
+    title: `${appRoutes.profile.persianTitle}`,
+    link: `${appRoutes.profile.link}`,
     icon: <RiDashboardLine />,
   },
   {
     id: 20,
-    title: "جزئیات حساب",
-    link: `${routes.profileInfo}`,
+    title: `${appRoutes.profileInfo.persianTitle}`,
+    link: `${appRoutes.profileInfo.link}`,
     icon: <RiAccountPinBoxLine />,
   },
   {
     id: 30,
-    title: "سفارش ها",
-    link: `${routes.profileOrders}`,
+    title: `${appRoutes.profileOrders.persianTitle}`,
+    link: `${appRoutes.profileOrders.link}`,
     icon: <RiShoppingCart2Line />,
   },
 ];

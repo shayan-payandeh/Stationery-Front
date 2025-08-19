@@ -1,4 +1,4 @@
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import { ICategoryGet } from "@/interface/category";
 import { ISubCategoryGet } from "@/interface/subCategory";
 import Link from "next/link";
@@ -16,10 +16,10 @@ function SubCategoryCard({
   classes,
 }: SubCategoryCardProps) {
   const { image, persianTitle, slug, category: categoryId } = subCategory;
-  const category = categories.find((item) => item._id === categoryId);
+  const category = categories?.find((item) => item._id === categoryId);
   return (
     <div id="subCategory-card" className={classes}>
-      <Link href={`${routes.category}/${slug}/${category?.slug}`}>
+      <Link href={`${appRoutes.category.link}/${slug}/${category?.slug}`}>
         <div
           id="image-wrapper"
           className="flex h-[85px] w-[85px] items-center justify-center transition-all duration-200 ease-in hover:scale-105"
@@ -27,7 +27,7 @@ function SubCategoryCard({
           <img alt={"error"} src={image} className="scale-[1.05]" />
         </div>
       </Link>
-      <Link href={`${routes.category}/${slug}/${category?.slug}`}>
+      <Link href={`${appRoutes.category.link}/${slug}/${category?.slug}`}>
         <div
           id="title-wrapper"
           className="text-[14px] font-medium text-dark-500"

@@ -1,37 +1,40 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import AppBreadCrumb from "@/component/AppBreadCrumb";
+import FilterSection from "@/component/FilterSection";
+import ProductsSkeletonSection from "@/component/skeleton/ProductsSkeleton";
+import { sortValues } from "@/constant/sortValues";
+import productService from "@/service/productService";
+import { toPersianNumbers } from "@/utils/toPersianNumbers";
+import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { GrSort } from "react-icons/gr";
+import { IoFilter } from "react-icons/io5";
+import FilterSectionMobile from "../FilterSectionMobile";
+import NoProductsToShow from "../NoProductsToShow";
+import ProductList from "../ProductList";
 import SortSection from "../SortSection";
 import SortSectionMobile from "../SortSectionMobile";
-import FilterSection from "@/component/FilterSection";
-import FilterSectionMobile from "../FilterSectionMobile";
-import ProductList from "../ProductList";
-import NoProductsToShow from "../NoProductsToShow";
-import { IoFilter } from "react-icons/io5";
-import { GrSort } from "react-icons/gr";
-import { toPersianNumbers } from "@/utils/toPersianNumbers";
-import { sortValues } from "@/constant/sortValues";
-import { useSearchParams } from "next/navigation";
-import productService from "@/service/productService";
+import { appRoutes } from "@/constant/routes";
 
 export default function SubCategoryPage({
   slug,
+  subSlug,
   initialProducts,
   initialSubCategories,
-  link,
-  persianTitle,
 }: {
   slug: string;
+  subSlug: string;
   initialProducts: any;
   initialSubCategories: any;
-  link: string;
-  persianTitle: string;
 }) {
   const [sortStatus, setSortStatus] = useState(false);
   const [filterStatus, setFilterStatus] = useState(false);
   const searchParams = useSearchParams();
-  const query = searchParams.toString();
+  // const query = searchParams.toString();
+  const queryString = useMemo(() => {
+    return new URLSearchParams([...searchParams.entries()].sort()).toString();
+  }, [searchParams]);
 
   // پیدا کردن ساب‌کتگوری جاری
   const theSubCategory = initialSubCategories?.find(
@@ -39,17 +42,14 @@ export default function SubCategoryPage({
   );
 
   // React Query برای محصولات
-  const {
-    data: productsData,
-    isLoading,
-    isFetching,
-  } = useQuery({
-    queryKey: ["products", slug, query],
-    queryFn: () => productService.getProductsBySlug(slug, query),
+  const { data: productsData, isFetching } = useQuery({
+    queryKey: ["products", slug, queryString],
+    queryFn: () => productService.getProductsBySlug(slug, queryString),
+    refetchOnWindowFocus: false,
     initialData: initialProducts, // داده اولیه از SSG
     placeholderData: (prev) => prev,
+    // staleTime: 1000 * 60 * 5,
   });
-
   const products = productsData?.docs ?? [];
 
   // شمارش فیلترها
@@ -101,7 +101,10 @@ export default function SubCategoryPage({
       <div className="responsive__wrapper flex flex-col gap-1">
         <AppBreadCrumb
           destinations={[
-            { title: persianTitle, link },
+            {
+              title: decodeURI(subSlug).replaceAll("-", " "),
+              link: `${appRoutes.category}/${subSlug}`,
+            },
             { title: decodeURI(slug).replaceAll("-", " "), link: "" },
           ]}
         />
@@ -146,16 +149,16 @@ export default function SubCategoryPage({
             </div>
 
             <div className="flex flex-col justify-center gap-10">
-              {isLoading ? (
-                <p>در حال بارگذاری...</p>
+              {isFetching ? (
+                <ProductsSkeletonSection />
               ) : products.length > 0 ? (
                 <ProductList
                   productList={products}
                   theSubCategory={theSubCategory ?? {}}
                 />
-              ) : !isFetching ? (
+              ) : (
                 <NoProductsToShow />
-              ) : null}
+              )}
             </div>
           </div>
         </div>

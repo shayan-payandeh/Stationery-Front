@@ -1,5 +1,4 @@
 "use client";
-import { routes } from "@/constant/routes";
 import { useGetBrands } from "@/hook/useBrands";
 import { useGetProducts } from "@/hook/useProducts";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
@@ -8,6 +7,7 @@ import { RiMenu5Fill } from "react-icons/ri";
 import ScrollBlur from "../animate/ScrollBlur";
 import BestBrandSectionSkeleton from "../skeleton/BrandSkeleton";
 import BrandSlider from "../BrandSlider";
+import { appRoutes } from "@/constant/routes";
 
 function BestBrandSection() {
   const { data, isLoading } = useGetBrands();
@@ -49,7 +49,7 @@ function BestBrandSection() {
             id="brand-card"
             className="col-span-2 grid w-full place-items-center justify-items-center gap-y-2 rounded-md bg-light-100 p-4 sm:col-span-3 md:col-span-2 lg:col-span-3 xl:col-span-2"
           >
-            <Link href={`${routes.products}?brand=${brand.title}`}>
+            <Link href={`${appRoutes.products.link}?brand=${brand.title}`}>
               <div
                 id="image-wrapper"
                 className="transition-smooth flex-center h-[117px] w-[117px] rounded-full bg-light-100 p-2 shadow-container hover:scale-105"
@@ -61,7 +61,7 @@ function BestBrandSection() {
                 />
               </div>
             </Link>
-            <Link href={`${routes.products}?brand=${brand.title}`}>
+            <Link href={`${appRoutes.products.link}?brand=${brand.title}`}>
               <div
                 id="title-wrapper"
                 className="text-[15px] font-semibold text-dark-500"
@@ -82,7 +82,7 @@ function BestBrandSection() {
         <BrandSlider BrandsToShow={bestBrands} />
       </div>
       <div id="more-brands-wrapper" className="flex-center w-full">
-        <Link href={routes.brands}>
+        <Link href={appRoutes.brands.link}>
           <div className="duration-300s flex items-center gap-[6px] rounded-sm border border-primary-500 px-3 py-2 text-[.9rem] font-medium text-primary-500 transition-all ease-in hover:bg-primary-500 hover:text-light-100">
             <RiMenu5Fill className="text-[20px]" />
             <span>مشاهده همه برندها</span>

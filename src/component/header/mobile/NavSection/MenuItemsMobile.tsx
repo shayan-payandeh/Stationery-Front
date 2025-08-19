@@ -1,5 +1,5 @@
 import { menuItems } from "@/constant/menuItems";
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import Link from "next/link";
 import { TbRosetteDiscount } from "react-icons/tb";
 
@@ -12,7 +12,7 @@ function MenuItemsMobile({ openHandler }: MenuItemsMobileProps) {
     ...menuItems,
     {
       name: "تخفیف ها",
-      link: `${routes.products}?discount=true`,
+      link: `${appRoutes.products.link}?discount=true`,
       icon: <TbRosetteDiscount color="#d42c40" />,
     },
   ];

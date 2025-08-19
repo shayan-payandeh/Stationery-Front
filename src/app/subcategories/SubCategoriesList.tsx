@@ -1,6 +1,6 @@
 import { ISubCategoryGet } from "@/interface/subCategory";
-import SubCategoryCard from "./SubCategoryCard";
 import { ICategoryGet } from "@/interface/category";
+import SubCategoryCard from "./SubCategoryCard";
 
 type SubCategoriesListProps = {
   subCategories: ISubCategoryGet[];

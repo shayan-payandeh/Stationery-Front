@@ -1,7 +1,6 @@
 import { categoriesIconSlug } from "@/constant/category";
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import Link from "next/link";
-import React from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 
 function CategoryNavbar() {
@@ -9,12 +8,12 @@ function CategoryNavbar() {
     id: item.id,
     icon: <item.Icon />,
     title: item.persianTitle,
-    link: `${routes.category}/${item.slug}`,
+    link: `${appRoutes.category.link}/${item.slug}`,
   }));
   const navItems = [
     {
-      title: "همه دسته بندی ها",
-      link: `${routes.category}`,
+      title: "همه زیر دسته ها",
+      link: `${appRoutes.subcategories.link}`,
       icon: <HiOutlineMenuAlt3 className="text-primary-500" />,
     },
     ...restCategories,

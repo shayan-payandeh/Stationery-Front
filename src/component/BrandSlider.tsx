@@ -1,5 +1,4 @@
 "use client";
-import { routes } from "@/constant/routes";
 import { IBrandsGet } from "@/interface/brands";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import Link from "next/link";
@@ -7,6 +6,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
 import ScrollBlur from "./animate/ScrollBlur";
 import Image from "next/image";
+import { appRoutes } from "@/constant/routes";
 
 function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
   // const SlickButtonFix = (props: {
@@ -91,7 +91,7 @@ function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
                 id="brand-card"
                 className="col-span-2 grid w-full place-items-center justify-items-center gap-y-2 rounded-md bg-light-100 p-4 sm:col-span-3 md:col-span-2 lg:col-span-3 xl:col-span-2"
               >
-                <Link href={`${routes.products}?brand=${brand.title}`}>
+                <Link href={`${appRoutes.products.link}?brand=${brand.title}`}>
                   <div
                     id="image-wrapper"
                     className="transition-smooth flex-center h-[117px] w-[117px] rounded-full bg-light-100 p-2 shadow-container hover:scale-105"
@@ -105,7 +105,7 @@ function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
                     />
                   </div>
                 </Link>
-                <Link href={`${routes.products}?brand=${brand.title}`}>
+                <Link href={`${appRoutes.products.link}?brand=${brand.title}`}>
                   <div
                     id="title-wrapper"
                     className="text-[15px] font-semibold text-dark-500"

@@ -8,7 +8,6 @@ export async function mutateBrands(userSearhText?: string) {
   const filteredBrands = userSearhText
     ? brands.filter((brand) => brand.persianTitle.includes(userSearhText))
     : brands;
-  console.log(filteredBrands);
   return filteredBrands;
   //filter data (brands) based on user search
   // return brands

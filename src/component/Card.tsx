@@ -1,4 +1,4 @@
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import { IProductsGet } from "@/interface/products";
 import {
   toPersianNumbers,
@@ -14,7 +14,7 @@ type Props = {
 function Card({ product }: Props) {
   return (
     <div className="relative w-full max-w-[250px] gap-2 rounded-lg border border-[#f0f0f1] bg-white pb-1 !text-right shadow-sm transition-all duration-300 ease-in hover:scale-[1.01] lg:max-w-[260px]">
-      <Link href={`${routes.products}/${product._id}`}>
+      <Link href={`${appRoutes.products.link}/${product._id}`}>
         {product.discount > 0 && (
           <span className="absolute left-0 top-0">
             <svg

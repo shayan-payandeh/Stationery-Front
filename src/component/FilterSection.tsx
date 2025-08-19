@@ -6,7 +6,6 @@ import { useState } from "react";
 
 function FilterSection({ subCategory }: { subCategory: ISubCategoryGet }) {
   const searchParams = useSearchParams();
-  console.log(subCategory);
   const initialFilterValues = subCategory?.filterItems.map((item) => ({
     ...item,
     values: new URLSearchParams(searchParams).get(item.title)?.split(",") || [],

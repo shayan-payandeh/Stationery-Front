@@ -1,10 +1,10 @@
 import ViewButton from "@/common/ViewButton";
 import { cards } from "@/constant/mainPageCards";
-import { routes } from "@/constant/routes";
 import Link from "next/link";
 import { IoIosArrowBack } from "react-icons/io";
 import CategoryImage from "../../../public/stationery-category.png";
 import ScrollFade from "../animate/ScrollFade";
+import { appRoutes } from "@/constant/routes";
 
 function MainPageCards() {
   const mutualClass = `
@@ -29,9 +29,9 @@ function MainPageCards() {
           }}
         >
           <h1 className="text-[.85rem] font-semibold text-light-100 sm:text-[1.2rem] md:text-[1.3rem] lg:text-[1.3rem] xl:text-[1.35rem]">
-            دسته بندی محصولات
+            زیر دسته ها
           </h1>
-          <Link href={routes.category}>
+          <Link href={appRoutes.subcategories.link}>
             <button className="flex items-center justify-center gap-[3px] rounded-full !bg-gray-600 px-[5px] py-[5px] text-[7.5px] text-light-100 sm:text-[9.5px] lg:text-[11px]">
               <h4 className="mr-1">مشاهده</h4>
               <IoIosArrowBack className="text-xs text-primary-500 md:text-[13px] lg:text-sm" />

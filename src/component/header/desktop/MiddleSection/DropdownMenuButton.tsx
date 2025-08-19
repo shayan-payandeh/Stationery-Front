@@ -1,5 +1,5 @@
 "use client";
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import { AppCtxt } from "@/context/Store";
 import { useGetProfile } from "@/hook/useAuth";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
@@ -21,13 +21,29 @@ export default function DropdownMenuButton() {
   const [cartLength, setCartLength] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const profileMenu = [
-    { link: `${routes.profile}`, persianTitle: "حساب کاربری" },
-    { link: `${routes.profileInfo}`, persianTitle: "جزئیات حساب" },
-    { link: `${routes.profileOrders}`, persianTitle: "سفارشات" },
+    {
+      link: `${appRoutes.profile.link}`,
+      persianTitle: `${appRoutes.profile.persianTitle}`,
+    },
+
+    {
+      link: `${appRoutes.profileInfo.link}`,
+      persianTitle: `${appRoutes.profileInfo.persianTitle}`,
+    },
+    {
+      link: `${appRoutes.profileOrders.link}`,
+      persianTitle: `${appRoutes.profileOrders.persianTitle}`,
+    },
   ];
   const authMenu = [
-    { link: `${routes.login}`, persianTitle: "ورود" },
-    { link: `${routes.register}`, persianTitle: "ثبت نام" },
+    {
+      link: `${appRoutes.login.link}`,
+      persianTitle: `${appRoutes.login.persianTitle}`,
+    },
+    {
+      link: `${appRoutes.register.link}`,
+      persianTitle: `${appRoutes.register.persianTitle}`,
+    },
   ];
   useEffect(() => {
     if (state.cart?.cartItems) setCartLength(state.cart.cartItems.length);
@@ -108,7 +124,7 @@ export default function DropdownMenuButton() {
         </div>
       </div>
 
-      <Link href={`${routes.cart}`}>
+      <Link href={`${appRoutes.cart.link}`}>
         <div className="relative z-50 flex max-w-[140px] items-center gap-3 rounded-md bg-primary-500 px-4 py-[10px] text-[11px] font-medium text-light-100 shadow-lg transition-all duration-200 ease-in hover:bg-primary-600 lg:px-4 lg:text-[12.8px]">
           <MdOutlineAddShoppingCart size={16} className="text-light-100" />
           {cartLength > 0 && (

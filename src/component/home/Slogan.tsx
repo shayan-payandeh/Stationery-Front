@@ -1,8 +1,8 @@
-import { routes } from "@/constant/routes";
 import Link from "next/link";
 import { IoMdArrowBack } from "react-icons/io";
 import logo from "../../../public/logo2.png";
 import ScrollView from "../animate/ScollView";
+import { appRoutes } from "@/constant/routes";
 
 function Slogan() {
   return (
@@ -21,7 +21,7 @@ function Slogan() {
               کنید.
             </p>
             <div className="flex-center mt-3 gap-3 md:justify-start">
-              <Link href={routes.about}>
+              <Link href={appRoutes.about.link}>
                 <span className="transition-smooth flex gap-2 text-center text-listItem italic text-primary-500 hover:scale-[1.02]">
                   <span>درباره شایان نگارش</span>
                   <IoMdArrowBack className="text-[20px] text-primary-500" />

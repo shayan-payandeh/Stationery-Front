@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SubCategoryCard from "../SubCategoryCard";
+import SubCategoryCard from "../../subcategories/SubCategoryCard";
 import { ICategoryGet } from "@/interface/category";
 
 type SwiperSectionProps = {

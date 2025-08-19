@@ -1,5 +1,5 @@
 "use client";
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import { AppCtxt } from "@/context/Store";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import Link from "next/link";
@@ -21,20 +21,20 @@ function MenuSectionMobile() {
   const items = [
     { label: "خانه", icon: <AiOutlineHome size={17} />, link: "/" },
     {
-      label: "دسته بندی ها",
+      label: "همه زیردسته ها",
       icon: <CiCircleList size={17} />,
-      link: `${routes.category}`,
+      link: `${appRoutes.subcategories.link}`,
     },
     {
       label: "سبد خرید",
       icon: <MdOutlineAddShoppingCart size={17} />,
-      link: `${routes.cart}`,
+      link: `${appRoutes.cart.link}`,
       hasBadge: true,
     },
     {
       label: "حساب من",
       icon: <FaRegUser size={15} />,
-      link: `${routes.profile}`,
+      link: `${appRoutes.profile.link}`,
     },
   ];
 

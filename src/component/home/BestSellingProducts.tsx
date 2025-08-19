@@ -1,11 +1,11 @@
 "use client";
-import { routes } from "@/constant/routes";
 import { useGetProducts } from "@/hook/useProducts";
 import { IProductsGet } from "@/interface/products";
 import Link from "next/link";
 import { IoMdArrowBack } from "react-icons/io";
 import ProductsSlider from "../ProductsSlider";
 import BestDiscountOrBestSellingSkeleton from "../skeleton/BestDiscountOrBestSellingSkeleton";
+import { appRoutes } from "@/constant/routes";
 
 function BestSellingProducts() {
   const { data: productsData, isLoading: productsIsloading } =
@@ -36,7 +36,7 @@ function BestSellingProducts() {
           {children}
         </div>
         <div id="more-products-wrapper" className="flex-center">
-          <Link href={`${routes.products}?sort=bestseling`}>
+          <Link href={`${appRoutes.products.link}?sort=bestseling`}>
             <div className="transition-smooth flex items-center gap-3 hover:scale-[1.05]">
               <span className="text-center italic text-light-100">
                 محصولات بیشتر ...

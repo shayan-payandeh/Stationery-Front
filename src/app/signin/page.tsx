@@ -1,11 +1,11 @@
 "use client";
-import { routes } from "@/constant/routes";
 import { useGetProfile, useLogin } from "@/hook/useAuth";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import FormAuth from "../../component/Form";
 import { useQueryClient } from "@tanstack/react-query";
+import { appRoutes } from "@/constant/routes";
 
 function Page() {
   const [hasToken, setHasToken] = useState(false);
@@ -75,13 +75,13 @@ function Page() {
         header={"ورود به سایت"}
         submitHandler={loginHandler}
       >
-        <Link href={`${routes.forgotPassword}`}>
+        {/* <Link href={`${routes.forgotPassword}`}>
           <span className="font-medium text-primary-400">فراموشی رمز عبور</span>
-        </Link>
-        <span>
+        </Link> */}
+        <span className="text-sm">
           <span className="text-dark-500">هنوز ثبت نام نکرده اید ؟</span>
           &nbsp;
-          <Link href={routes.register}>
+          <Link href={appRoutes.register.link}>
             <span className="font-medium text-primary-400">
               عضویت در شایان نگارش
             </span>

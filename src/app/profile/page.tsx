@@ -1,9 +1,9 @@
 import ScrollStaggeredFade from "@/component/animate/ScrollStaggeredFade";
 import { profileText } from "@/constant/profileTests";
-import { routes } from "@/constant/routes";
 import Link from "next/link";
 import { LiaEnvelopeOpenTextSolid, LiaUserEditSolid } from "react-icons/lia";
 import Greeting from "./Greeting";
+import { appRoutes } from "@/constant/routes";
 
 function Page() {
   return (
@@ -31,7 +31,7 @@ function Page() {
         </p>
       </div>
       <div className="flex flex-1 items-end justify-center gap-x-4 py-3 sm:justify-end lg:p-3">
-        <Link href={routes.profileInfo}>
+        <Link href={appRoutes.profileInfo.link}>
           <div className="flex-center transition-smooth gap-x-2 rounded-md border border-primary-500 px-3 py-2 text-[11px] text-primary-500 hover:bg-primary-500 hover:text-light-100 md:text-[12.5px] lg:text-[14px]">
             <span>
               <LiaUserEditSolid className="text-[18px]" />
@@ -39,7 +39,7 @@ function Page() {
             <span>ویرایش اطلاعات</span>
           </div>
         </Link>
-        <Link href={routes.contact}>
+        <Link href={appRoutes.contact.link}>
           <div className="flex-center transition-smooth gap-x-2 rounded-md border border-primary-500 px-3 py-2 text-[11px] text-primary-500 hover:bg-primary-500 hover:text-light-100 md:text-[12.5px] lg:text-[14px]">
             <span>
               <LiaEnvelopeOpenTextSolid className="text-[18px]" />

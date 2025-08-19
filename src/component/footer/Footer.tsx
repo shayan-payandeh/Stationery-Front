@@ -1,4 +1,3 @@
-import { routes } from "@/constant/routes";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import Link from "next/link";
 import {
@@ -7,24 +6,25 @@ import {
   PiWhatsappLogo,
 } from "react-icons/pi";
 import ScrollBlur from "../animate/ScrollBlur";
+import { appRoutes } from "@/constant/routes";
 
 function Footer() {
   const menu = [
     {
-      name: "خانه",
-      link: `${routes.main}`,
+      name: `${appRoutes.main.persianTitle}`,
+      link: `${appRoutes.main.link}`,
     },
     {
-      name: "درباره ما",
-      link: `${routes.about}`,
+      name: `${appRoutes.about.persianTitle}`,
+      link: `${appRoutes.about.link}`,
     },
     {
-      name: "ارتباط با ما",
-      link: `${routes.contact}`,
+      name: `${appRoutes.contact.persianTitle}`,
+      link: `${appRoutes.contact.link}`,
     },
     {
-      name: "سوالات متداول",
-      link: `${routes.faq}`,
+      name: `${appRoutes.faq.persianTitle}`,
+      link: `${appRoutes.faq.link}`,
     },
     // {
     //   name: "تخفیف ها",
@@ -34,20 +34,20 @@ function Footer() {
   ];
   const secondaryList = [
     {
-      name: "لیست همه محصولات",
-      link: `${routes.products}`,
+      name: `${appRoutes.products.persianTitle}`,
+      link: `${appRoutes.products.link}`,
     },
     {
-      name: "دسته بندی محصولات",
-      link: `${routes.category}`,
+      name: `${appRoutes.subcategories.persianTitle}`,
+      link: `${appRoutes.subcategories.link}`,
     },
     {
-      name: "برندها",
-      link: `${routes.brands}`,
+      name: `${appRoutes.brands.persianTitle}`,
+      link: `${appRoutes.brands.link}`,
     },
     {
-      name: "برچسب ها",
-      link: `${routes.tags}`,
+      name: `${appRoutes.tags.persianTitle}`,
+      link: `${appRoutes.tags.link}`,
     },
     // {
     //   name: "تخفیف ها",

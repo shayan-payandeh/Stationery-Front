@@ -7,7 +7,9 @@ type AppBreadCrumbProps = {
   destinations: { title: string; link: string }[];
 };
 function AppBreadCrumb({ destinations }: AppBreadCrumbProps) {
-  const mainDestination = [{ title: "شایان نگارش", link: appRoutes.main.link }];
+  const mainDestination = [
+    { title: appRoutes.main.persianTitle, link: appRoutes.main.link },
+  ];
   const destinationArray = [...mainDestination, ...destinations];
   return (
     <Breadcrumbs

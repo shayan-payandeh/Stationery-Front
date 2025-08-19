@@ -3,8 +3,8 @@ import { TbSearch } from "react-icons/tb";
 import DropdownMenuButton from "./DropdownMenuButton";
 import logo from "../../../../../public/main_logo.png";
 import Link from "next/link";
-import { routes } from "@/constant/routes";
 import { useState } from "react";
+import { appRoutes } from "@/constant/routes";
 
 function MiddleSection() {
   const [searchValue, setSearchValue] = useState("");
@@ -17,7 +17,7 @@ function MiddleSection() {
             className="col-span-2 flex items-center justify-center py-2 lg:col-span-2 xl:col-span-1"
           >
             <div className="h-full w-full">
-              <Link href={routes.main}>
+              <Link href={appRoutes.main.link}>
                 <img
                   alt={logo.src}
                   src={logo.src}
@@ -37,7 +37,7 @@ function MiddleSection() {
                 placeholder="جستجوی محصولات ..."
                 onChange={(e) => setSearchValue(e.target.value)}
               />
-              <Link href={`${routes.products}?search=${searchValue}`}>
+              <Link href={`${appRoutes.products.link}?search=${searchValue}`}>
                 <TbSearch className="absolute right-0 top-0 my-[6px] mr-10 text-lg font-black text-light-400 peer-focus:-scale-x-100 peer-focus:text-primary-500 lg:mr-3 xl:mr-10" />
               </Link>
               <PiArrowCircleLeftFill className="absolute right-0 top-0 mr-[276px] mt-[4px] hidden cursor-pointer text-[24px] text-primary-500 peer-focus:block lg:mr-[370px] xl:mr-[400px]" />

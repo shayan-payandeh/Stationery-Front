@@ -4,9 +4,10 @@ import { TbSearch } from "react-icons/tb";
 type SearchBoxProps = {
   onSearch: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholderText: string;
+  inputValue: string;
 };
 
-function SearchBox({ onSearch, placeholderText }: SearchBoxProps) {
+function SearchBox({ onSearch, placeholderText, inputValue }: SearchBoxProps) {
   return (
     <>
       <div className="relative w-full text-center">
@@ -15,6 +16,7 @@ function SearchBox({ onSearch, placeholderText }: SearchBoxProps) {
           name="searchBox"
           type="text"
           onChange={onSearch}
+          value={inputValue}
           placeholder={placeholderText}
           className="peer w-full rounded-md bg-light-100 px-12 py-3 text-center text-[16px] shadow-container placeholder:text-center placeholder:text-light-500 focus:outline focus:outline-2 focus:outline-primary-500"
         />

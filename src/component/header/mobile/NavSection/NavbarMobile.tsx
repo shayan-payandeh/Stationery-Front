@@ -1,5 +1,5 @@
 import { categoriesIconSlug } from "@/constant/category";
-import { routes } from "@/constant/routes";
+import { appRoutes } from "@/constant/routes";
 import Link from "next/link";
 
 function NavbarMobile({ openHandler }) {
@@ -7,7 +7,7 @@ function NavbarMobile({ openHandler }) {
     id: item.id,
     icon: <item.Icon />,
     title: item.persianTitle,
-    link: `${routes.category}/${item.slug}`,
+    link: `${appRoutes.category.link}/${item.slug}`,
   }));
   const navItems = [...newCategories];
 
