@@ -4,6 +4,7 @@ import {
   toPersianNumbers,
   toPersianNumbersWithComma,
 } from "@/utils/toPersianNumbers";
+import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
@@ -40,10 +41,11 @@ function Card({ product }: Props) {
         )}
 
         <div className="mx-auto h-[210px] w-[230px] p-3">
-          <img
+          <Image
             alt="img"
             src={product.images[0].src}
-            className="h-full w-full"
+            width={230}
+            height={210}
           />
         </div>
         <div className="w-full border border-light-300"></div>

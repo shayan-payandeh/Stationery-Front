@@ -6,6 +6,7 @@ import Link from "next/link";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
 import ScrollBlur from "./animate/ScrollBlur";
+import Image from "next/image";
 
 function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
   // const SlickButtonFix = (props: {
@@ -95,9 +96,11 @@ function BrandSlider({ BrandsToShow }: { BrandsToShow: IBrandsGet[] }) {
                     id="image-wrapper"
                     className="transition-smooth flex-center h-[117px] w-[117px] rounded-full bg-light-100 p-2 shadow-container hover:scale-105"
                   >
-                    <img
+                    <Image
                       alt={brand.title}
                       src={brand.logo}
+                      width={117}
+                      height={117}
                       className="rounded-full border-2 border-primary-500 p-1 shadow-container"
                     />
                   </div>

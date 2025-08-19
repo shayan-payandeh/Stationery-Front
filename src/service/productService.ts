@@ -4,9 +4,11 @@ import http from "./http";
 
 class ProductService {
   async getProducts(query: QueryType) {
-    return await http
+    const prod = await http
       .get<IProduct>(`/product/list?${query}`)
       .then(({ data }) => data.data);
+
+    return prod;
   }
   async getProductsBySlug(slug: string, query: QueryType) {
     return await http
@@ -21,6 +23,6 @@ class ProductService {
   }
 }
 
-const productSerice = new ProductService();
+const productService = new ProductService();
 
-export default productSerice;
+export default productService;

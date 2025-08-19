@@ -1,5 +1,6 @@
 import { routes } from "@/constant/routes";
 import { IBrandsGet } from "@/interface/brands";
+import Image from "next/image";
 import Link from "next/link";
 
 function BrandCard({ brand }: { brand: IBrandsGet }) {
@@ -14,10 +15,12 @@ function BrandCard({ brand }: { brand: IBrandsGet }) {
           id="image-wrapper"
           className="transition-smooth flex-center h-[85px] w-[85px] rounded-full bg-light-100 p-2 shadow-md hover:scale-105"
         >
-          <img
+          <Image
             alt={brand.title}
             src={brand.logo}
             className="rounded-full border-2 border-primary-500 p-1"
+            width={85}
+            height={85}
           />
         </div>
       </Link>

@@ -11,6 +11,7 @@ import CommentSection from "./CommentSection/page";
 import ImageGallery from "./ImageGallery";
 import ProductInformation from "./ProductInformation";
 import Loading from "@/component/Loading";
+import productService from "@/service/productService";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -26,13 +27,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: product.name,
     description: product.description.persianTitle,
+    alternates: {
+      canonical: `https://shayan-negaresh.shop/products/${id}`,
+    },
   };
 }
 
 export async function generateStaticParams() {
-  const products = await http
-    .get<IProduct>("/product/list")
-    .then(({ data }) => data.data.products.docs);
+  const result = await productService.getProducts({});
+  const { docs: products } = result.products;
   return products.map((product) => ({
     id: product._id,
   }));
@@ -72,53 +75,118 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
     }
   });
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description.persianTitle,
+    image: product.images.map((img) => img.src),
+    sku: product._id,
+    brand: {
+      "@type": "Brand",
+      name: product.brand || "نوشت افزار شایان نگارش",
+    },
+    offers: {
+      "@type": "Offer",
+      url: `https://shayan-negaresh.shop/products/${id}`,
+      priceCurrency: "IRR",
+      price: product.price,
+      availability:
+        product.stock > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      itemCondition: "https://schema.org/NewCondition",
+    },
+    aggregateRating: product.rating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: product.rating,
+          reviewCount: product.reviewCount || 0,
+        }
+      : undefined,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "محصولات",
+        item: "https://shayan-negaresh.shop/products",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: product.name,
+        item: `https://shayan-negaresh.shop/products/${id}`,
+      },
+    ],
+  };
+
   if (!product) return <Loading />;
   return (
-    <section id="product-detail-container" className="flex-center w-full">
-      <div className="responsive__wrapper flex flex-col justify-center gap-5 text-center">
-        <AppBreadCrumb destinations={[{ title: persianTitle, link: link }]} />
-        <div className="px-6 md:px-0 lg:px-0 [&>*]:bg-white">
-          <div
-            id="main-section"
-            className="grid min-h-96 grid-cols-7 gap-y-10 px-2 py-3"
-          >
-            {product && (
-              <div
-                className="col-span-7 lg:col-span-3 xl:col-span-2"
-                id="photos-wrapper"
-              >
-                <ImageGallery images={images} />
-              </div>
-            )}
+    <>
+      <section id="product-detail-container" className="flex-center w-full">
+        <div className="responsive__wrapper flex flex-col justify-center gap-5 text-center">
+          <AppBreadCrumb
+            destinations={[
+              { title: persianTitle, link: link },
+              { title: product.name, link: `${link}/${product.id}` },
+            ]}
+          />
+          <div className="px-6 md:px-0 lg:px-0 [&>*]:bg-white">
             <div
-              className="col-span-7 lg:col-span-4 xl:col-span-3"
-              id="info-wrapper"
+              id="main-section"
+              className="grid min-h-96 grid-cols-7 gap-y-10 px-2 py-3"
             >
-              <ProductInformation product={product} />
+              {product && (
+                <div
+                  className="col-span-7 lg:col-span-3 xl:col-span-2"
+                  id="photos-wrapper"
+                >
+                  <ImageGallery images={images} />
+                </div>
+              )}
+              <div
+                className="col-span-7 lg:col-span-4 xl:col-span-3"
+                id="info-wrapper"
+              >
+                <ProductInformation product={product} />
+              </div>
+              <div className="col-span-7 py-6 xl:col-span-2" id="shop-wrapper">
+                <AddToCartCard product={product} />
+              </div>
             </div>
-            <div className="col-span-7 py-6 xl:col-span-2" id="shop-wrapper">
-              <AddToCartCard product={product} />
-            </div>
-          </div>
-          <div
-            id="similar-products-wrapper"
-            className="flex min-h-10 flex-col gap-6 px-2 py-6"
-          >
-            <div className="text-start font-semibold">
-              <span>محصولات مرتبط</span>
-            </div>
+            <div
+              id="similar-products-wrapper"
+              className="flex min-h-10 flex-col gap-6 px-2 py-6"
+            >
+              <div className="text-start font-semibold">
+                <span>محصولات مرتبط</span>
+              </div>
 
-            <ProductsSlider productsToShow={limitedRelatedProducts} />
-          </div>
-          <div
-            id="comment-wrapper"
-            className="flex min-h-10 flex-col gap-y-6 px-2 py-4"
-          >
-            <CommentSection />
+              <ProductsSlider productsToShow={limitedRelatedProducts} />
+            </div>
+            <div
+              id="comment-wrapper"
+              className="flex min-h-10 flex-col gap-y-6 px-2 py-4"
+            >
+              <CommentSection />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>{" "}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+    </>
   );
 }
 
