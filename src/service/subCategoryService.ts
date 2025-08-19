@@ -43,6 +43,6 @@ class SubCategoryService {
   }
 }
 
-const x = new SubCategoryService();
+const subCategoryService = new SubCategoryService();
 
-export default x;
+export default subCategoryService;
