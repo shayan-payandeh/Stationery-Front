@@ -4,11 +4,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import OrdersList from "./OrdersList";
 
 export const dynamic = "force-dynamic";
-function Page() {
-  // const orderData = useGetMyOrders();
-  // const { isLoading, data } = orderData || {};
-  // const orders = data?.data.data.orders;
 
+function Page() {
   return (
     <Suspense
       fallback={
