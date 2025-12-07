@@ -6,7 +6,7 @@ export const useGetBrands = () =>
     queryKey: ["get-brands"],
     queryFn: brandService.getBrands,
     retry: false,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 
 export const useGetBrandById = (id: string) =>

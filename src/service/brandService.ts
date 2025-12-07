@@ -9,6 +9,13 @@ class BrandService {
       .then(({ data }) => data.data);
   }
 
+  async getServerBrands() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/brand/list`);
+    if (!res.ok) throw new Error("Faied to fetch brands");
+    const data = await res.json();
+    return data.data.brands;
+  }
+
   async getBrandById(id: string) {
     return await http
       .get<{

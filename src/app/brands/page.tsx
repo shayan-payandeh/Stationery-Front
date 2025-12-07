@@ -1,48 +1,24 @@
-"use client";
 import AppBreadCrumb from "@/component/AppBreadCrumb";
 import { appRoutes } from "@/constant/routes";
-import { useGetBrands } from "@/hook/useBrands";
-import { useState } from "react";
-import BrandPageSkeleton from "../../component/skeleton/BrandPageSkeleton";
-import BrandSearch from "./BrandSearch";
-import BrandTitle from "./BrandTitle";
-import BrandsList from "./BrandsList";
+import BrandsClient from "./BrandsClient";
+import brandService from "@/service/brandService";
+import ErrorFallback from "@/component/ErrorFallback";
 
-function Page() {
-  const [searchText, setSearchText] = useState("");
-  const { data, isLoading } = useGetBrands();
-  const { brands } = data || {};
-  const filteredBrands = searchText
-    ? brands.filter((brand) => brand.persianTitle.includes(searchText))
-    : brands;
-  const { link, persianTitle } = appRoutes.brands;
+export default async function BrandsPage() {
+  try {
+    const initialBrands = await brandService.getServerBrands();
+    const { link, persianTitle } = appRoutes.brands;
+    return (
+      <div id="brand-page-wrapper" className="flex-center w-full">
+        <div className="responsive__wrapper flex flex-col justify-center gap-4">
+          <AppBreadCrumb destinations={[{ link: link, title: persianTitle }]} />
 
-  return (
-    <div id="brand-page-wrapper" className="flex-center w-full">
-      <div className="responsive__wrapper flex flex-col justify-center gap-4">
-        <AppBreadCrumb destinations={[{ link: link, title: persianTitle }]} />
-        <div
-          id="title-wrapper"
-          className="flex w-full items-center gap-3 px-6 py-2 md:px-0"
-        >
-          <BrandTitle BrandsCount={filteredBrands?.length} />
+          {/* Client Component handles search and filtering */}
+          <BrandsClient initialBrands={initialBrands || []} />
         </div>
-        <div id="searching-wrapper" className="px-6 py-[15px] md:px-0">
-          <div className="mx-auto max-w-[665px]">
-            <BrandSearch
-              searchTextHandler={setSearchText}
-              inputValue={searchText}
-            />
-          </div>
-        </div>
-        {isLoading ? (
-          <BrandPageSkeleton />
-        ) : (
-          <BrandsList brands={filteredBrands} />
-        )}
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    return <ErrorFallback message="خطا در بارگذاری برندها" fullScreen />;
+  }
 }
-
-export default Page;
