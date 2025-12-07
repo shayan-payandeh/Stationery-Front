@@ -34,7 +34,7 @@ export const useRegister = (queryClient: QueryClient) =>
       return queryClient.invalidateQueries({ queryKey: ["getProfile"] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message‌ || "خطا در ارتباط با سرور");
     },
   });
 
@@ -43,12 +43,10 @@ export const useLogin = (queryClient: QueryClient) =>
     mutationFn: (data: IUserPost) => authService.login(data),
     onSuccess: (data) => {
       toast.success(data?.data?.data.message);
-      return queryClient.refetchQueries({
-        queryKey: ["getProfile"],
-      });
+      return queryClient.invalidateQueries({ queryKey: ["getProfile"] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message‌ || "خطا در ارتباط با سرور");
     },
   });
 
