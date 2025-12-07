@@ -5,7 +5,9 @@ import { LiaEnvelopeOpenTextSolid, LiaUserEditSolid } from "react-icons/lia";
 import Greeting from "./Greeting";
 import { appRoutes } from "@/constant/routes";
 
-function Page() {
+export const dynamic = "force-dynamic";
+
+function ProfilePage() {
   return (
     <div className="flex h-full flex-col gap-3 rounded-lg border border-light-200 px-5 py-6 shadow-container">
       <Greeting />
@@ -52,4 +54,6 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return <ProfilePage />;
+}

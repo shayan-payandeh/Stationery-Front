@@ -1,27 +1,53 @@
-"use client";
-import { useGetProfile } from "@/hook/useAuth";
-import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
 
-function Greeting() {
-  // const token = (await cookies().get("accessToken")) as any;
-  // const data = await authService.getProfile(`${token["name"]}=${token.value}`);
-  const cookie = getCookie("accessToken");
-  const hasToken = cookie ? true : false;
-  const userData = useGetProfile(hasToken);
-  const { data, isLoading } = userData || {};
+async function Greeting() {
+  try {
+    const cookieStore = cookies();
+    const token = cookieStore.get("accessToken");
 
-  return (
-    <>
+    if (!token) {
+      return (
+        <h2 className="font-semibold text-dark-500">
+          <span className="text-dark-500">سلام</span>{" "}
+          <span className="font-morvarid text-primary-500">مهمان</span>
+        </h2>
+      );
+    }
+
+    const getProfile = async () => {
+      const baseUrl =
+        process.env.NODE_ENV === "production"
+          ? process.env.NEXT_PUBLIC_API_URL
+          : process.env.NEXT_PUBLIC_LOCAL_API_URL;
+      const { data } = await fetch(`${baseUrl}/user/profile`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Cookie: `${token.name}=${token.value};` as any,
+        } as HeadersInit,
+        cache: "no-store",
+      }).then((res) => res.json());
+      const { user } = data || {};
+      return user;
+    };
+    const user = await getProfile();
+
+    return (
       <h2 className="font-semibold text-dark-500">
         <span className="text-dark-500">سلام</span>{" "}
-        <span
-          className={`font-morvarid text-primary-500 ${isLoading ? "blur-sm" : ""}`}
-        >
-          &quot; {data?.fullName} &quot;
+        <span className="font-morvarid text-primary-500">
+          &quot; {user?.fullName} &quot;
         </span>
       </h2>
-    </>
-  );
+    );
+  } catch (error) {
+    return (
+      <h2 className="font-semibold text-dark-500">
+        <span className="text-dark-500">سلام</span>{" "}
+        <span className="font-morvarid text-primary-500">کاربر</span>
+      </h2>
+    );
+  }
 }
 
 export default Greeting;
