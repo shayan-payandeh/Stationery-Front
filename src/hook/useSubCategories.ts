@@ -6,7 +6,7 @@ export const useGetSubCategories = () =>
     queryKey: ["get-subCategories"],
     queryFn: subCategoryService.getSubCategories,
     retry: false,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 
 export const useGetSubCategoryById = (id: string) =>

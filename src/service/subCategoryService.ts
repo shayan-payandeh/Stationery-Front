@@ -9,6 +9,20 @@ class SubCategoryService {
       .then(({ data }) => data.data);
   }
 
+  async getServerSubCategories() {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/subcategory/list`,
+      );
+      if (!res.ok) throw new Error("Faied to fetch subcategories");
+      const data = await res.json();
+
+      return { data: data.data.subCategories, error: false };
+    } catch (error) {
+      return { data: [], error: true };
+    }
+  }
+
   async getSubCategoryById(id: string) {
     return await http
       .get<{
