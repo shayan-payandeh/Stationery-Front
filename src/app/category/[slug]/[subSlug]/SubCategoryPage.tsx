@@ -6,7 +6,6 @@ import { sortValues } from "@/constant/sortValues";
 import productService from "@/service/productService";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { GrSort } from "react-icons/gr";
 import { IoFilter } from "react-icons/io5";
@@ -16,24 +15,25 @@ import ProductList from "../ProductList";
 import SortSection from "../SortSection";
 import SortSectionMobile from "../SortSectionMobile";
 import { appRoutes } from "@/constant/routes";
+import { queryStringGenerator } from "./queryStringGenerator";
 
 export default function SubCategoryPage({
   slug,
   subSlug,
   initialProducts,
   initialSubCategories,
+  searchParams,
 }: {
   slug: string;
   subSlug: string;
   initialProducts: any;
   initialSubCategories: any;
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const [sortStatus, setSortStatus] = useState(false);
   const [filterStatus, setFilterStatus] = useState(false);
-  const searchParams = useSearchParams();
-  // const query = searchParams.toString();
   const queryString = useMemo(() => {
-    return new URLSearchParams([...searchParams.entries()].sort()).toString();
+    return queryStringGenerator(searchParams);
   }, [searchParams]);
 
   // پیدا کردن ساب‌کتگوری جاری
@@ -42,7 +42,11 @@ export default function SubCategoryPage({
   );
 
   // React Query برای محصولات
-  const { data: productsData, isFetching } = useQuery({
+  const {
+    data: productsData,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["products", slug, queryString],
     queryFn: () => productService.getProductsBySlug(slug, queryString),
     refetchOnWindowFocus: false,
@@ -54,14 +58,13 @@ export default function SubCategoryPage({
 
   // شمارش فیلترها
   const excludedKeys = ["sort", "page"];
-  const filterCount = Array.from(searchParams.entries()).filter(
-    ([key]) => !excludedKeys.includes(key),
+  const filterCount = Object.keys(searchParams).filter(
+    (key) => !excludedKeys.includes(key),
   ).length;
 
   // عنوان سورت فعلی
-  const currentSortPersianTitle = searchParams.has("sort")
-    ? sortValues.find((item) => item.title === searchParams.get("sort"))
-        ?.persianTitle
+  const currentSortPersianTitle = searchParams.sort
+    ? sortValues.find((item) => item.title === searchParams.sort)?.persianTitle
     : "جدیدترین";
 
   // قفل کردن اسکرول هنگام باز بودن فیلتر یا سورت
@@ -103,7 +106,7 @@ export default function SubCategoryPage({
           destinations={[
             {
               title: decodeURI(subSlug).replaceAll("-", " "),
-              link: `${appRoutes.category}/${subSlug}`,
+              link: `${appRoutes.category.link}/${decodeURI(subSlug)}`,
             },
             { title: decodeURI(slug).replaceAll("-", " "), link: "" },
           ]}
@@ -149,7 +152,7 @@ export default function SubCategoryPage({
             </div>
 
             <div className="flex flex-col justify-center gap-10">
-              {isFetching ? (
+              {isLoading || (isFetching && products.length === 0) ? (
                 <ProductsSkeletonSection />
               ) : products.length > 0 ? (
                 <ProductList
