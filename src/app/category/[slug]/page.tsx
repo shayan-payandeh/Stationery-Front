@@ -1,74 +1,82 @@
 import AppBreadCrumb from "@/component/AppBreadCrumb";
+import ErrorFallback from "@/component/ErrorFallback";
 import { categoriesIconSlug } from "@/constant/category";
 import { IApiResponse } from "@/interface/apiResponse";
 import { ICategoryGet } from "@/interface/category";
 import { IProduct } from "@/interface/products";
 import { ISubCategoryGet } from "@/interface/subCategory";
 import http from "@/service/http";
+import { HiOutlineTag } from "react-icons/hi";
 import CategoryTitle from "./CategoryTitle";
 import NoProductsToShow from "./NoProductsToShow";
 import ProductList from "./ProductList";
 import SwiperSection from "./SwiperSection";
 
 export async function generateStaticParams() {
-  const categories = await http
-    .get("/category/list")
-    .then(({ data }) => data.data.categories);
-  return categories.map((category) => ({
-    slug: category.slug,
-  }));
+  try {
+    const res = await http.get("/category/list");
+    // فقط داده JSON-safe برگردانده شود
+    const categories = res.data?.data?.categories ?? [];
+    return categories.map((category: any) => ({ slug: category.slug }));
+  } catch (error) {
+    return [];
+  }
 }
 
-async function Page({ params }) {
+interface PageProps {
+  params: { slug: string };
+}
+
+async function Page({ params }: PageProps) {
   const slug = decodeURI(params.slug);
 
-  const { categories } = await http
-    .get<IApiResponse<ICategoryGet>>("/category/list")
-    .then(({ data }) => data.data);
-  const theCategory = categories.find((item) => item.slug === slug);
-  const theCategoryId = theCategory?._id;
+  try {
+    // دریافت دسته‌ها
+    const { data: categoriesData } = await http
+      .get<IApiResponse<ICategoryGet>>("/category/list")
+      .then(({ data }) => data);
 
-  const { subCategories } = await http
-    .get<IApiResponse<ISubCategoryGet>>(`/subcategory/list`)
-    .then(({ data }) => data.data);
-  const theSubCategories = subCategories?.filter(
-    (item) => item.category === theCategoryId,
-  );
+    const categories = categoriesData?.categories ?? [];
+    const theCategory = categories.find((item) => item.slug === slug);
 
-  const { docs: products } = await http
-    .get<IProduct>(`/product/${slug}`)
-    .then(({ data }) => data.data.products);
+    if (!theCategory) {
+      return <ErrorFallback message="دسته‌بندی پیدا نشد" fullScreen />;
+    }
 
-  const Icon = categoriesIconSlug.find(
-    (item) => item.slug === decodeURI(slug),
-  )?.Icon;
+    const theCategoryId = theCategory._id;
 
-  // const defaultSlugs = [
-  //   "لوازم-دانش-آموزی",
-  //   "لوازم-اداری",
-  //   "دفتر-و-کاغذ",
-  //   "نوشت-افزار",
-  // ];
-  // if (defaultSlugs.includes(decodeURI(slug)) && (isLoading || productIsloading))
-  //   return (
-  //     <MainCategoryPageSkeleton
-  //       link={link}
-  //       persianTitle={persianTitle}
-  //       slug={slug}
-  //     />
-  //   );
-  return (
-    <>
+    // دریافت زیر دسته‌ها
+    const { data: subCategoriesData } = await http
+      .get<IApiResponse<ISubCategoryGet>>("/subcategory/list")
+      .then(({ data }) => data);
+
+    const theSubCategories =
+      subCategoriesData?.subCategories?.filter(
+        (item) => item.category === theCategoryId,
+      ) ?? [];
+
+    // دریافت محصولات
+    const { data: productsData } = await http
+      .get<IProduct>(`/product/${slug}`)
+      .then(({ data }) => data);
+
+    const products = productsData?.products?.docs ?? [];
+
+    // یافتن آیکون
+    const Icon =
+      categoriesIconSlug.find((item) => item.slug === slug)?.Icon ||
+      HiOutlineTag;
+
+    return (
       <div className="flex-center w-full">
         <div className="responsive__wrapper flex flex-col gap-1">
           <AppBreadCrumb
-            destinations={[
-              { title: decodeURI(slug).replaceAll("-", " "), link: "" },
-            ]}
+            destinations={[{ title: slug.replaceAll("-", " "), link: "" }]}
           />
+
           <div
             id="category-wrapper"
-            className={`grid grid-cols-10 gap-2 pb-10 pt-6`}
+            className="grid grid-cols-10 gap-2 pb-10 pt-6"
           >
             <div
               id="category-products-section-wrapper"
@@ -80,27 +88,33 @@ async function Page({ params }) {
               ></div>
 
               <div className="flex flex-col justify-center gap-10">
-                <SwiperSection
-                  theSubCategory={theSubCategories}
-                  categories={categories!}
-                />
+                {theSubCategories.length > 0 && (
+                  <SwiperSection
+                    theSubCategory={theSubCategories}
+                    categories={categories}
+                  />
+                )}
 
-                <div id="products-wrapper" className={`flex flex-col gap-4`}>
-                  <CategoryTitle Icon={Icon!} theCategory={theCategory!} />
-
-                  {products!?.length > 0 && (
-                    <ProductList productList={products!} />
+                <div id="products-wrapper" className="flex flex-col gap-4">
+                  {theCategory && (
+                    <CategoryTitle Icon={Icon} theCategory={theCategory} />
                   )}
 
-                  {products!?.length === 0 && <NoProductsToShow />}
+                  {products.length > 0 ? (
+                    <ProductList productList={products} />
+                  ) : (
+                    <NoProductsToShow />
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
-  );
+    );
+  } catch (error) {
+    return <ErrorFallback message="خطا در بارگذاری داده‌ها" fullScreen />;
+  }
 }
 
 export default Page;

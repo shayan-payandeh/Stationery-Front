@@ -22,12 +22,13 @@ import CommentFilterSectionMobile from "./CommentFilterSectionMobile";
 import CommentSort from "./CommentSort";
 import CommentSortSectionMobile from "./CommentSortSectionMobile";
 
+
 const tabTitle = [
   { index: 0, title: "همه", name: "all" },
   { index: 1, title: "دیدگاه های من", name: "mine" },
 ];
 
-function CommentSection() {
+function CommentSectionContent() {
   const token = getCookie("accessToken");
   const hasToken = token ? true : false;
   const userData = useGetProfile(hasToken);
@@ -245,4 +246,6 @@ function CommentSection() {
   );
 }
 
-export default CommentSection;
+export default function CommentSection() {
+  return <CommentSectionContent />;
+}

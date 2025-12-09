@@ -9,6 +9,19 @@ class CategoryService {
       .then(({ data }) => data.data);
   }
 
+  async getServerCategories() {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/category/list`,
+      );
+      if (!res.ok) throw new Error("Faied to fetch categories");
+      const data = await res.json();
+      return { data: data.data.categories, error: false };
+    } catch (error) {
+      return { data: [], error: true };
+    }
+  }
+
   async getCategoryById(id: string) {
     return await http
       .get<{

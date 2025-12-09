@@ -4,7 +4,7 @@ import Price from "@/common/svg/Price";
 import Support from "@/common/svg/Support";
 import ScrollBlur from "../animate/ScrollBlur";
 
-function Feaures() {
+function Features() {
   const mutualClass = `
     [&>*]:flex-center [&>*]:w-[25%] [&>*]:flex-col [&>*]:gap-[7px] [&>*]:py-0
     [&_.icon-wrapper]:flex [&_.icon-wrapper]:h-[25px] [&_.icon-wrapper]:w-[30px] [&_.icon-wrapper]:justify-center [&_.icon-wrapper]:md:h-[40px] [&_.icon-wrapper]:md:w-[47px] [&_.icon-wrapper]:lg:h-[50px] [&_.icon-wrapper]:lg:w-[60px]
@@ -43,4 +43,4 @@ function Feaures() {
   );
 }
 
-export default Feaures;
+export default Features;

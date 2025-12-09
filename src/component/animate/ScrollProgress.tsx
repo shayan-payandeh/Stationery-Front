@@ -1,7 +1,7 @@
 "use client";
 import { motion, useScroll } from "framer-motion";
 
-function ScrollPrgress() {
+function ScrollProgress() {
   const { scrollYProgress } = useScroll({ offset: ["start start", "end end"] });
 
   return (
@@ -12,4 +12,4 @@ function ScrollPrgress() {
   );
 }
 
-export default ScrollPrgress;
+export default ScrollProgress;

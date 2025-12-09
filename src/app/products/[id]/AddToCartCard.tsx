@@ -1,17 +1,16 @@
 "use client";
-import { AppCtxt, ICartItems } from "@/context/Store";
+import { useCartStore } from "@/hook/useCartStore";
 import { IProductsGet } from "@/interface/products";
 import {
   toPersianNumbers,
   toPersianNumbersWithComma,
 } from "@/utils/toPersianNumbers";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdEventAvailable } from "react-icons/md";
 import { PiPackage } from "react-icons/pi";
 
 function AddToCartCard({ product }: { product: IProductsGet }) {
-  const { state, dispatch } = useContext(AppCtxt);
-  const cartItems = state?.cart?.cartItems as ICartItems[];
+  const { cartItems, addItem, removeItem } = useCartStore((state) => state);
   const [isProductInCart, setProductInCart] = useState(false);
   const existItem = cartItems?.find((item) => item._id === product._id);
   useEffect(() => {
@@ -22,21 +21,14 @@ function AddToCartCard({ product }: { product: IProductsGet }) {
     const item = {
       _id: product._id,
       name: product.name,
-      // brand: product.brand,
-      // category: product.category,
-      // subCategory: product.subCategory,
-      // description: product.description,
-      // discount: product.discount,
-      // price: product.price,
       count: product.count,
-      // images: product.images,
     };
     const quantity = existItem ? existItem.quantity + number : 1;
     if (quantity === 0) {
-      dispatch({ type: "CART_REMOVE_ITEM", payload: { ...item, quantity } });
+      removeItem(item._id);
       setProductInCart(false);
     } else {
-      dispatch({ type: "CART_ADD_ITEM", payload: { ...item, quantity } });
+      addItem({ ...item, quantity: quantity });
       setProductInCart(true);
     }
   };

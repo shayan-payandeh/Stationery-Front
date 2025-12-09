@@ -1,24 +1,24 @@
 "use client";
-import Loading from "@/component/Loading";
 import AppBreadCrumb from "@/component/AppBreadCrumb";
+import Loading from "@/component/Loading";
 import { appRoutes } from "@/constant/routes";
-import { AppCtxt, ICartItems } from "@/context/Store";
+import { useCartStore } from "@/hook/useCartStore";
 import { ICartType } from "@/interface/cartType";
 import productService from "@/service/productService";
 import { useQueries } from "@tanstack/react-query";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CartDetail from "./CartDetail";
 import EmptyCart from "./EmptyCart";
 import OrderSummary from "./OrderSummary";
 
-function Page() {
-  const [cartItems, setCartItems] = useState<ICartType[]>([]);
+function CartPage() {
+  const { cartItems, addItem, removeItem } = useCartStore((state) => state);
+  const [cartItemsDetailed, setCartItemsDetailed] = useState<ICartType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { link, persianTitle } = appRoutes.cart;
-  const { state, dispatch } = useContext(AppCtxt);
-  const items = state.cart?.cartItems;
+  // const { state, dispatch } = useContext(AppCtxt);
   const res = useQueries({
-    queries: items!?.map((item) => ({
+    queries: cartItems!?.map((item) => ({
       queryKey: ["get-productByID", item._id],
       queryFn: () => productService.getProductById(item._id),
       retry: false,
@@ -35,49 +35,52 @@ function Page() {
   useEffect(() => {
     setIsLoading(currentIsLoading);
   }, [currentIsLoading]);
-
   useEffect(() => {
     if (currentIsSuccess && !currentIsLoading) {
       const cartProducts = res.map((item) => item.data.product);
       const editedCartProducts: ICartType[] = [];
       for (const element of cartProducts) {
-        for (const item of items as ICartType[]) {
+        for (const item of cartItems as ICartType[]) {
           if (element._id === item._id) {
             const obj: ICartType = { ...element, quantity: item.quantity };
             editedCartProducts.push(obj);
           }
         }
       }
-      setCartItems(editedCartProducts);
+      setCartItemsDetailed(editedCartProducts);
     }
-  }, [currentIsSuccess, currentIsLoading, state.cart?.cartItems, items]);
+  }, [currentIsSuccess, currentIsLoading, cartItems]);
 
   const addToCartHandler = (id: string, number: number = 1) => {
-    const item = state.cart?.cartItems.find((cartItem) => cartItem._id === id);
+    const item = cartItems.find((cartItem) => cartItem._id === id);
     const quantity = item!?.quantity + number;
     if (quantity === 0) {
-      dispatch({
-        type: "CART_REMOVE_ITEM",
-        payload: { ...(item as ICartItems), quantity },
-      });
+      // dispatch({
+      //   type: "CART_REMOVE_ITEM",
+      //   payload: { ...(item as ICartItems), quantity },
+      // });
+      removeItem(item!?._id);
     } else {
-      dispatch({
-        type: "CART_ADD_ITEM",
-        payload: { ...(item as ICartItems), quantity },
-      });
+      // dispatch({
+      //   type: "CART_ADD_ITEM",
+      //   payload: { ...(item as ICartItems), quantity },
+      // });
+      addItem({ ...item!, quantity });
     }
   };
 
   const removeCartItemHandler = (id: string) => {
-    const theItem = state.cart?.cartItems.find((item) => item._id === id);
-    dispatch({
-      type: "CART_REMOVE_ITEM",
-      payload: { ...(theItem as ICartItems), quantity: 0 },
-    });
+    const theItem = cartItems.find((item) => item._id === id);
+    removeItem(theItem!?._id);
+
+    // dispatch({
+    //   type: "CART_REMOVE_ITEM",
+    //   payload: { ...(theItem as ICartItems), quantity: 0 },
+    // });
     // setIsLoading(false);
   };
 
-  const totalPrice = cartItems
+  const totalPrice = cartItemsDetailed
     .map((item) => item.quantity * item.price)
     .reduce((total, num) => total + num, 0);
   const discountOnTotal =
@@ -89,14 +92,14 @@ function Page() {
     <section id="cart-container" className="flex-center w-full">
       <div className="responsive__wrapper flex flex-col justify-center gap-5 text-center">
         <AppBreadCrumb destinations={[{ title: persianTitle, link: link }]} />
-        {state.cart && state.cart?.cartItems.length > 0 && (
+        {cartItems && cartItems.length > 0 && (
           <div
             id="main-section"
             className="grid min-h-screen grid-cols-4 bg-white shadow-container"
           >
             <div id="cart-detail" className="col-span-4 w-full xl:col-span-3">
               <CartDetail
-                cartItems={cartItems}
+                cartItems={cartItemsDetailed}
                 addToCartHandler={addToCartHandler}
                 removeCartItemHandler={removeCartItemHandler}
               />
@@ -113,10 +116,12 @@ function Page() {
             </div>
           </div>
         )}
-        {state.cart?.cartItems.length === 0 && <EmptyCart />}
+        {cartItems.length === 0 && <EmptyCart />}
       </div>
     </section>
   );
 }
 
-export default Page;
+export default function Page() {
+  return <CartPage />;
+}

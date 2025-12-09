@@ -1,23 +1,23 @@
 "use client";
 import { appRoutes } from "@/constant/routes";
-import { AppCtxt } from "@/context/Store";
 import { useGetProfile } from "@/hook/useAuth";
+import { useCartStore } from "@/hook/useCartStore";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { IoChevronDown } from "react-icons/io5";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 
 export default function DropdownMenuButton() {
+  const cartItems = useCartStore((state) => state.cartItems);
   const router = useRouter();
   const token = getCookie("accessToken");
   const hasToken = token ? true : false;
   const userData = useGetProfile(hasToken);
   const { data, isLoading } = userData || {};
-  const { state } = useContext(AppCtxt);
   const [cartLength, setCartLength] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const profileMenu = [
@@ -46,8 +46,8 @@ export default function DropdownMenuButton() {
     },
   ];
   useEffect(() => {
-    if (state.cart?.cartItems) setCartLength(state.cart.cartItems.length);
-  }, [state.cart?.cartItems]);
+    if (cartItems) setCartLength(cartItems.length);
+  }, [cartItems]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 

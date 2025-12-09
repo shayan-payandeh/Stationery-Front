@@ -11,9 +11,8 @@ type Props = {
 };
 
 function Paginate({ items, searchParams, router, pathname }: Props) {
-  const currentPage = items.page;
-
-  const totalpages = items.totalPages;
+  const currentPage = items?.page;
+  const totalpages = items?.totalPages;
   const smallArray = Array.from({ length: totalpages }, (_, i) => i + 1);
 
   const x1: number[] =

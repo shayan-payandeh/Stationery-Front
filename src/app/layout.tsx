@@ -1,10 +1,10 @@
 import vazirFont, { mikhakFont, morvaridFont } from "@/constant/localFonts";
-import { StoreProvider } from "@/context/Store";
 import { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import Providers from "./Providers";
 import MainUI from "./MainUI";
+import Providers from "./Providers";
+import { StoreProvider } from "@/context/Store";
 
 export const metadata: Metadata = {
   title: "نوشت افزار شایان نگارش",

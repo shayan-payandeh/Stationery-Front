@@ -1,21 +1,14 @@
-"use client";
-import { useGetBrands } from "@/hook/useBrands";
-import { useGetProducts } from "@/hook/useProducts";
+import { appRoutes } from "@/constant/routes";
+import { IProductsGet } from "@/interface/products";
+import brandService from "@/service/brandService";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 import Link from "next/link";
 import { RiMenu5Fill } from "react-icons/ri";
 import ScrollBlur from "../animate/ScrollBlur";
-import BestBrandSectionSkeleton from "../skeleton/BrandSkeleton";
 import BrandSlider from "../BrandSlider";
-import { appRoutes } from "@/constant/routes";
 
-function BestBrandSection() {
-  const { data, isLoading } = useGetBrands();
-  const { brands } = data || {};
-  const { data: productsData, isLoading: productsIsloading } =
-    useGetProducts("page=all");
-  const { products: productsInfo } = productsData || {};
-  const { docs: products } = productsInfo || {};
+async function BestBrandSection({ products }: { products: IProductsGet[] }) {
+  const brands = await brandService.getServerBrands();
 
   if (brands && products) {
     for (const brand of brands!) {
@@ -32,7 +25,6 @@ function BestBrandSection() {
     (a, b) => b.productsCount - a.productsCount,
   );
   const bestBrands = sortedBrandsByCounts?.slice(0, 10);
-  if (isLoading && productsIsloading) return <BestBrandSectionSkeleton />;
   return (
     <div id="bestBrands-wrapper" className="flex flex-col gap-1 px-4 py-12">
       <h1 className="text-center text-title font-semibold text-dark-500">

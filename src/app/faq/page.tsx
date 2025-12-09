@@ -3,7 +3,7 @@ import { faqTexts } from "@/constant/faqTexts";
 import { appRoutes } from "@/constant/routes";
 import { toPersianNumbers } from "@/utils/toPersianNumbers";
 
-function Page() {
+async function Page() {
   const mutualClass = `[&>*]:flex [&>*]:flex-col [&>*]:gap-2 [&>*]:p-8 [&>*]:shadow-container`;
   const mutualClassTwo = `[&_h1]:font-mikhak [&_h1]:text-primary-500`;
   const mutualClassThree = `[&_p]:leading-9`;

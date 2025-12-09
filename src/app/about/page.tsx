@@ -3,8 +3,9 @@ import AppBreadCrumb from "@/component/AppBreadCrumb";
 import { aboutTexts } from "@/constant/aboutTexts";
 import { appRoutes } from "@/constant/routes";
 
-async function Page() {
+function Page() {
   const { link, persianTitle } = appRoutes.about;
+
   return (
     <div id="category-page-wrapper" className="flex-center">
       <div className="responsive__wrapper flex flex-col gap-7">

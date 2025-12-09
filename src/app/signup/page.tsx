@@ -8,7 +8,8 @@ import FormAuth from "../../component/Form";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/constant/routes";
 
-function Page() {
+
+function SignupPage() {
   const [hasToken, setHasToken] = useState(false);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isRepeatPasswordVisible, setRepeatPasswordVisible] = useState(false);
@@ -137,4 +138,6 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return <SignupPage />;
+}

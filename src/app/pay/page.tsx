@@ -1,30 +1,32 @@
 "use client";
-import Loading from "@/component/Loading";
 import AppBreadCrumb from "@/component/AppBreadCrumb";
+import Loading from "@/component/Loading";
 import { appRoutes } from "@/constant/routes";
-import { AppCtxt } from "@/context/Store";
+import { useCartStore } from "@/hook/useCartStore";
 import { useAddOrder } from "@/hook/useOrders";
 import { ICartType } from "@/interface/cartType";
 import { IOrderPost } from "@/interface/order";
+import { IShippingAddress } from "@/interface/shippingAddress";
 import productService from "@/service/productService";
 import { useQueries } from "@tanstack/react-query";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import OrderSummaryCheck from "./OrderSummaryCheck";
 import ShippingAddressForm from "./ShippingAddressForm";
 
-function Page() {
+function PayPage() {
+  const cartItems = useCartStore((state) => state.cartItems);
   const { persianTitle, link } = appRoutes.payment;
   const router = useRouter();
   const token = getCookie("accessToken");
   const [isLoading, setIsLoading] = useState(true);
   const { mutateAsync } = useAddOrder();
-  const [cartItems, setCartItems] = useState<ICartType[]>([]);
-  const { state } = useContext(AppCtxt);
-  const items = state.cart?.cartItems;
+  const [cartItemsDetailed, setCartItemsDetailed] = useState<ICartType[]>([]);
+
   const res = useQueries({
-    queries: items!?.map((item) => ({
+    queries: cartItems!?.map((item) => ({
       queryKey: ["get-productByID", item._id],
       queryFn: () => productService.getProductById(item._id),
       retry: false,
@@ -52,7 +54,7 @@ function Page() {
       const cartProducts = res.map((item) => item.data["product"]);
       const editedCartProducts: ICartType[] = [];
       for (const element of cartProducts) {
-        for (const item of items as ICartType[]) {
+        for (const item of cartItems as ICartType[]) {
           if (element._id === item._id) {
             const obj: ICartType = {
               ...element,
@@ -62,11 +64,11 @@ function Page() {
           }
         }
       }
-      setCartItems(editedCartProducts);
+      setCartItemsDetailed(editedCartProducts);
     }
-  }, [currentIsSuccess, currentIsLoading, items]);
+  }, [currentIsSuccess, currentIsLoading, cartItems]);
 
-  const totalPrice = cartItems
+  const totalPrice = cartItemsDetailed
     .map((item) => item.quantity * item.price)
     .reduce((total, num) => total + num, 0);
   const discountOnTotal =
@@ -77,15 +79,15 @@ function Page() {
   const delieveryCost = 70000;
   const payablePrice = payablePriceWithoutDelievey + delieveryCost;
 
-  const submitHandler = async (theShippingAddress) => {
+  const submitHandler = async (theShippingAddress: IShippingAddress) => {
     try {
-      const cartItems = items?.map((item) => ({
+      const finalCartItems = cartItems?.map((item) => ({
         product: item._id,
         quantity: item.quantity,
       }));
       const theOrder: IOrderPost = {
         orderInfo: {
-          orderItems: cartItems!,
+          orderItems: finalCartItems!,
           payInfo: {
             delieveryCost: delieveryCost,
             discount: discountOnTotal,
@@ -103,9 +105,10 @@ function Page() {
           },
         },
       };
-      const x = await mutateAsync(theOrder);
-      console.log(x);
-    } catch (error) {}
+      await mutateAsync(theOrder);
+    } catch (error) {
+      toast.error("خطا در ثبت سفارش");
+    }
   };
 
   if (isLoading) return <Loading />;
@@ -119,7 +122,7 @@ function Page() {
         >
           <div id="order-check-container">
             <OrderSummaryCheck
-              cartItems={cartItems}
+              cartItems={cartItemsDetailed}
               delieveryCost={delieveryCost}
               discountOnTotal={(discountOnTotal * totalPrice) / 100}
               payablePrice={payablePrice}
@@ -136,4 +139,6 @@ function Page() {
   );
 }
 
-export default Page;
+export default function Page() {
+  return <PayPage />;
+}

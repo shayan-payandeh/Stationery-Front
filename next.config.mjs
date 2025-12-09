@@ -17,6 +17,11 @@ const nextConfig = {
         port: "5000",
         pathname: "/image/**",
       },
+      {
+        protocol: "https",
+        hostname: "shayan-files.storage.c2.liara.space",
+        pathname: "**",
+      },
     ],
   },
 

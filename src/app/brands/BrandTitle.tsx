@@ -7,9 +7,7 @@ function BrandTitle({ BrandsCount }: { BrandsCount: number }) {
       <HiOutlineMenuAlt3 className="text-[18px] text-primary-500" />
       <h2 className="text-title font-semibold text-dark-500">
         برندها :
-        <span
-          className={`text-listItem text-primary-500 ${BrandsCount ? "" : "blur-sm"}`}
-        >
+        <span className={`text-listItem text-primary-500`}>
           <span> ( </span>
           {BrandsCount && <span>{toPersianNumbers(BrandsCount)}</span>}
           &nbsp;

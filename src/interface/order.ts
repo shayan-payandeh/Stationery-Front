@@ -1,15 +1,9 @@
+import { IShippingAddress } from "./shippingAddress";
+
 export interface IOrderPost {
   orderInfo: {
     orderItems: { product: string; quantity: number }[];
-    shippingAddress: {
-      firstName: string;
-      lastName: string;
-      phoneNumber: string;
-      province: string;
-      city: string;
-      postalcode: string;
-      address: string;
-    };
+    shippingAddress: IShippingAddress;
     payInfo: {
       totalPrice: number;
       delieveryCost: number;

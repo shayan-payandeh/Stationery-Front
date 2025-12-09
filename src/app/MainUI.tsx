@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/component/footer/Footer";
-import Header from "@/component/header/Header";
+import HeaderWithStore from "@/component/header/HeaderWithStore";
 import { useState } from "react";
 
 function MainUI({ children }) {
@@ -8,7 +8,7 @@ function MainUI({ children }) {
 
   return (
     <div className={`${open ? "overflow-y-hidden" : ""}`}>
-      <Header setOpen={setOpen} isOpen={open} />
+      <HeaderWithStore setOpen={setOpen} isOpen={open} />
       <div className="min-h-[500px] pt-8 md:py-7">{children}</div>
       <Footer />
     </div>

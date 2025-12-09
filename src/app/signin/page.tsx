@@ -1,18 +1,17 @@
 "use client";
+import { appRoutes } from "@/constant/routes";
 import { useGetProfile, useLogin } from "@/hook/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import FormAuth from "../../component/Form";
-import { useQueryClient } from "@tanstack/react-query";
-import { appRoutes } from "@/constant/routes";
 
 function Page() {
   const [hasToken, setHasToken] = useState(false);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const queryClient = useQueryClient();
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("page");

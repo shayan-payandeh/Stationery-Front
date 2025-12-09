@@ -1,15 +1,15 @@
 import { appRoutes } from "@/constant/routes";
-import { AppCtxt } from "@/context/Store";
 import { IOrderPost } from "@/interface/order";
 import orderService from "@/service/orderService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import toast from "react-hot-toast";
+import { useCartStore } from "./useCartStore";
 
 export const useAddOrder = () => {
   const router = useRouter();
-  const { dispatch } = useContext(AppCtxt);
+  // const { dispatch } = useContext(AppCtxt);
+  const clearCart = useCartStore((state) => state.clearCart);
   return useMutation({
     mutationFn: (order: IOrderPost) => orderService.orderAdd(order),
     onSuccess: (data) => {
@@ -17,7 +17,8 @@ export const useAddOrder = () => {
       router.push(
         `${appRoutes.profileOrders.link}/${data.data.data.order._id}`,
       );
-      dispatch({ type: "CART_CLEAR", payload: {} });
+      // dispatch({ type: "CART_CLEAR", payload: {} });
+      clearCart();
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || error.message);

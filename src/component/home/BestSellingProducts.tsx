@@ -1,17 +1,10 @@
-"use client";
-import { useGetProducts } from "@/hook/useProducts";
+import { appRoutes } from "@/constant/routes";
 import { IProductsGet } from "@/interface/products";
 import Link from "next/link";
 import { IoMdArrowBack } from "react-icons/io";
 import ProductsSlider from "../ProductsSlider";
-import BestDiscountOrBestSellingSkeleton from "../skeleton/BestDiscountOrBestSellingSkeleton";
-import { appRoutes } from "@/constant/routes";
 
-function BestSellingProducts() {
-  const { data: productsData, isLoading: productsIsloading } =
-    useGetProducts("page=all");
-  const { products: productsInfo } = productsData || {};
-  const { docs: products } = productsInfo || {};
+function BestSellingProducts({ products }: { products: IProductsGet[] }) {
   let productsToShow: IProductsGet[] = [];
   if (products) {
     productsToShow = products.sort((a, b) => a.count - b.count).slice(0, 5);
@@ -49,12 +42,6 @@ function BestSellingProducts() {
     );
   };
 
-  if (productsIsloading)
-    return (
-      <ComponentStructure>
-        <BestDiscountOrBestSellingSkeleton />
-      </ComponentStructure>
-    );
   return (
     <ComponentStructure>
       <ProductsSlider productsToShow={productsToShow} />

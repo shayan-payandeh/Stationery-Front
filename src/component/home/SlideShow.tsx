@@ -1,23 +1,17 @@
 "use client";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
-import slide1 from "../../../public/slideshow/slide_1.jpg";
-import slide2 from "../../../public/slideshow/slide_2.jpg";
-import slide3 from "../../../public/slideshow/slide_3.jpg";
-import slide4 from "../../../public/slideshow/slide_4.jpg";
-import slide5 from "../../../public/slideshow/slide_5.jpg";
-import slide6 from "../../../public/slideshow/slide_6.jpg";
 
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 function SlideShow() {
   const images = [
-    slide3.src,
-    slide2.src,
-    slide1.src,
-    slide4.src,
-    slide5.src,
-    slide6.src,
+    "https://shayan-files.storage.c2.liara.space/stationery/slideshow/slide_1.jpg",
+    "https://shayan-files.storage.c2.liara.space/stationery/slideshow/slide_2.jpg",
+    "https://shayan-files.storage.c2.liara.space/stationery/slideshow/slide_3.jpg",
+    "https://shayan-files.storage.c2.liara.space/stationery/slideshow/slide_4.jpg",
+    "https://shayan-files.storage.c2.liara.space/stationery/slideshow/slide_5.jpg",
+    "https://shayan-files.storage.c2.liara.space/stationery/slideshow/slide_6.jpg",
   ];
 
   const mutualClass = `
