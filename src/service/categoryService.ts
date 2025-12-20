@@ -1,6 +1,7 @@
 import { IApiResponse } from "@/interface/apiResponse";
 import http from "./http";
 import { ICategoryGet, ICategoryPost } from "@/interface/category";
+import { getValidatedBaseUrl } from "@/utils/baseUrl";
 
 class CategoryService {
   async getCategories() {
@@ -10,10 +11,10 @@ class CategoryService {
   }
 
   async getServerCategories() {
+    const baseUrl = getValidatedBaseUrl();
+
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/category/list`,
-      );
+      const res = await fetch(`${baseUrl}/category/list`);
       if (!res.ok) throw new Error("Faied to fetch categories");
       const data = await res.json();
       return { data: data.data.categories, error: false };

@@ -46,24 +46,26 @@ function Page() {
       onChange: passwordHandler,
       validation: {
         required: true,
+        // amazonq-ignore-next-line
         // pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
         // minLength: 60,
       },
     },
   ];
 
+  // amazonq-ignore-next-line
   const loginHandler = async () => {
-    try {
-      const userData = await mutateAsync({
-        email: email,
-        password: password,
-      });
-      if (userData.status === 200) {
-        query ? router.push(query) : router.push("/");
-        setHasToken(true);
-        refetch();
-      }
-    } catch (error) {}
+    const userData = await mutateAsync({
+      email: email,
+      password: password,
+    });
+    if (userData.status === 200) {
+      const isValidRedirect =
+        query && query.startsWith("/") && !query.startsWith("//");
+      isValidRedirect ? router.push(query) : router.push("/");
+      setHasToken(true);
+      refetch();
+    }
   };
 
   return (

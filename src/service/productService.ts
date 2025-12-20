@@ -1,25 +1,24 @@
 import { IProduct } from "@/interface/products";
 import { QueryType } from "@/type/query";
 import http from "./http";
+import { getValidatedBaseUrl } from "@/utils/baseUrl";
 
 class ProductService {
   async getProducts(query: QueryType) {
-    const prod = await http
+    const products = await http
       .get<IProduct>(`/product/list?${query}`)
       .then(({ data }) => data.data);
 
-    return prod;
+    return products;
   }
 
-  async getServerProducts(searchParams) {
+  async getServerProducts(searchParams: Record<string, string>) {
     const queryString = new URLSearchParams(searchParams).toString();
+    const baseUrl = getValidatedBaseUrl();
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/list?${queryString}`,
-        {
-          cache: "force-cache", // مناسب SSG
-        },
-      );
+      const res = await fetch(`${baseUrl}/product/list?${queryString}`, {
+        cache: "force-cache", // مناسب SSG
+      });
 
       if (!res.ok) {
         throw new Error("خطا در بارگذاری محصولات");
@@ -41,7 +40,7 @@ class ProductService {
   async getServerProductsBySlug(slug: string, query: QueryType) {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/${slug}?${query}`,
+        `${getValidatedBaseUrl()}/product/${slug}?${query}`,
       );
 
       if (!res.ok) {
@@ -62,9 +61,10 @@ class ProductService {
   }
 
   async getServerProductById(id: string) {
+    const baseUrl = getValidatedBaseUrl();
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/product/${id}`,
+        `${baseUrl}/product/product/${id}`,
         { cache: "force-cache" }, // برای SSG
       );
       // ❌ اگر status غیر 2xx باشه

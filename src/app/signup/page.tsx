@@ -8,7 +8,6 @@ import FormAuth from "../../component/Form";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/constant/routes";
 
-
 function SignupPage() {
   const [hasToken, setHasToken] = useState(false);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -104,17 +103,15 @@ function SignupPage() {
     // e.preventDefault();
     if (password !== reapeatedPassword) toast.error("رمز عبور یکسان نیست !");
     else {
-      try {
-        await mutateAsync({
-          email: email,
-          phoneNumber: phoneNumber,
-          fullName: name,
-          password: password,
-        });
-        setHasToken(true);
-        router.push("/profile");
-        refetch();
-      } catch (error) {}
+      await mutateAsync({
+        email: email,
+        phoneNumber: phoneNumber,
+        fullName: name,
+        password: password,
+      });
+      setHasToken(true);
+      router.push("/profile");
+      refetch();
     }
   };
 

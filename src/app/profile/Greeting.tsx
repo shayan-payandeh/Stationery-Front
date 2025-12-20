@@ -1,3 +1,4 @@
+import { getValidatedBaseUrl } from "@/utils/baseUrl";
 import { cookies } from "next/headers";
 
 async function Greeting() {
@@ -15,10 +16,7 @@ async function Greeting() {
     }
 
     const getProfile = async () => {
-      const baseUrl =
-        process.env.NODE_ENV === "production"
-          ? process.env.NEXT_PUBLIC_API_URL
-          : process.env.NEXT_PUBLIC_LOCAL_API_URL;
+      const baseUrl = getValidatedBaseUrl();
       const { data } = await fetch(`${baseUrl}/user/profile`, {
         method: "GET",
         credentials: "include",

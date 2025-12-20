@@ -1,6 +1,7 @@
 import { IApiResponse } from "@/interface/apiResponse";
 import http from "./http";
 import { IBrandsGet, IBrandsPost } from "@/interface/brands";
+import { getValidatedBaseUrl } from "@/utils/baseUrl";
 
 class BrandService {
   async getBrands() {
@@ -10,7 +11,8 @@ class BrandService {
   }
 
   async getServerBrands() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/brand/list`);
+    const baseUrl = getValidatedBaseUrl();
+    const res = await fetch(`${baseUrl}/brand/list`);
     if (!res.ok) throw new Error("Faied to fetch brands");
     const data = await res.json();
     return data.data.brands;

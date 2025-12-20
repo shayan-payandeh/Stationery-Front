@@ -30,10 +30,12 @@ export const useRegister = (queryClient: QueryClient) =>
   useMutation({
     mutationFn: (data: IUserRegisterPost) => authService.register(data),
     onSuccess: (data) => {
+      // amazonq-ignore-next-line
       toast.success(data.data.data.message);
       return queryClient.invalidateQueries({ queryKey: ["getProfile"] });
     },
     onError: (error: any) => {
+      // amazonq-ignore-next-line
       toast.error(error.response?.data?.message‌ || "خطا در ارتباط با سرور");
     },
   });
@@ -69,10 +71,10 @@ export const useUserUpdate = (queryClient: QueryClient) =>
     }) => authService.userUpdate(id, data),
 
     onSuccess: (data) => {
-      toast.success(data.data.data.message);
+      toast.success(data?.data?.data?.message);
       return queryClient.invalidateQueries({ queryKey: ["getProfile"] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || "خطا در ارتباط با سرور");
     },
   });

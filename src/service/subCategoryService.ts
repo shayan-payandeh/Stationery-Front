@@ -1,6 +1,7 @@
 import { IApiResponse } from "@/interface/apiResponse";
 import http from "./http";
 import { ISubCategoryGet, ISubCategoryPost } from "@/interface/subCategory";
+import { getValidatedBaseUrl } from "@/utils/baseUrl";
 
 class SubCategoryService {
   async getSubCategories() {
@@ -10,10 +11,9 @@ class SubCategoryService {
   }
 
   async getServerSubCategories() {
+    const baseUrl = getValidatedBaseUrl();
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/subcategory/list`,
-      );
+      const res = await fetch(`${baseUrl}/subcategory/list`);
       if (!res.ok) throw new Error("Faied to fetch subcategories");
       const data = await res.json();
 

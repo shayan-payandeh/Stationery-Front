@@ -1,4 +1,5 @@
 import { IOrderPost } from "@/interface/order";
+import { getValidatedBaseUrl } from "@/utils/baseUrl";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 
@@ -30,10 +31,8 @@ class OrderService {
   }
 
   async getMyOrder() {
-    const baseUrl =
-      process.env.NODE_ENV === "production"
-        ? process.env.NEXT_PUBLIC_API_URL
-        : process.env.NEXT_PUBLIC_LOCAL_API_URL;
+    const baseUrl = getValidatedBaseUrl();
+
     const token = getCookie("accessToken");
     const res = await axios.get(`${baseUrl}/order/myorders`, {
       withCredentials: true,
